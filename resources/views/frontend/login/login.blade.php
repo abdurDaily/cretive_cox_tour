@@ -6,7 +6,7 @@
         <div class="row mt-5">
             <div class="col-lg-6 mx-auto shadow py-3">
 
-                <form class="p-3" id="register" action="{{ route('login') }}" method="post"
+                <form class="p-3" id="register" action="{{ route('backend.login.check.auth') }}" method="post"
                 class="shadow-sm p-4">
                 @csrf
     

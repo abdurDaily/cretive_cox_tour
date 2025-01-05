@@ -41,11 +41,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page"
-                            href="{{ route('backend.registrations.index') }}">Register</a>
+                            href="{{ route('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page"
                             href="{{ route('backend.admin.dashboard') }}">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                            href="{{ route('login') }}">Login</a>
                     </li>
                 </ul>
             </div>

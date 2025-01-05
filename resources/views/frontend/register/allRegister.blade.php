@@ -9,11 +9,17 @@
         <tr>
             <th>Sn.</th>
             <th>Name</th>
+            <th>email</th>
             <th>Phone</th>
             <th>T-shirt</th>
-            <th>Additional Member</th>
-            <th>M.Status</th>
             <th>Opinion</th>
+            <th>Ad Name</th>
+            <th>M</th>
+            <th>L</th>
+            <th>XL</th>
+            <th>XXL</th>
+            <th>Single R</th>
+            <th>Couple R</th>
         </tr>
 
         @forelse ($allRegisters as $key => $register)

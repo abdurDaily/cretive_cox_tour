@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use App\Models\AditionalMember;
+use App\Models\User;
 
 class RegistrationController extends Controller
 {
@@ -28,7 +30,24 @@ class RegistrationController extends Controller
 
     public function viewRegistrations()
     {
-        $allRegisters = Registration::get();
+        $allRegisters = AditionalMember::with('user')->get();
+        dd($allRegisters);
         return view('frontend.register.allRegister', compact('allRegisters'));
+    }
+
+
+
+    // ADDITIONAL MEMBERS ADD 
+    public function additionalMembers(Request $request){
+      $addAdditionalMembers = new AditionalMember();
+      $addAdditionalMembers->name = $request->name;
+      $addAdditionalMembers->m_size = $request->m_size;
+      $addAdditionalMembers->l_size = $request->l_size;
+      $addAdditionalMembers->xl_size = $request->xl_size;
+      $addAdditionalMembers->xxl_size = $request->xxl_size;
+      $addAdditionalMembers->single_room = $request->single_room;
+      $addAdditionalMembers->couple_room = $request->couple_room;
+      $addAdditionalMembers->save();
+      return redirect()->route('home')->with('success','additional members added successfully!');
     }
 }
