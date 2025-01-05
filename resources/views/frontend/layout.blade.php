@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg shadow py-3">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="https://www.creativeitinstitute.com/images/logo/logo1718088965.png" alt="">
+                <img style="width: 200px;" src="https://www.creativeitinstitute.com/images/logo/logo1718088965.png" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"

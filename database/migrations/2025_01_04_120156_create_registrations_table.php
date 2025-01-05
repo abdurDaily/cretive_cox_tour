@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('password');
             $table->string('phone');
-            $table->enum('tshirt_size', ['S', 'M', 'L', 'XL', 'XXL']);
-            $table->integer('number_of_people')->nullable(); // optional
-            $table->enum('status', ['single', 'couple']);
+            $table->enum('tshirt_size', ['M', 'L', 'XL', 'XXL']);
             $table->longText('opinion')->nullable();
             $table->timestamps();
         });
