@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         $user->status = 1;
         $user->name = 'abdur rahman';
         $user->email = 'abdur@gmail.com';
-        // $user->email_verified_at = null;
+        $user->is_going = true;
         $user->password = Hash::make('password');
         $user->phone = '01777797143';
         $user->tshirt_size = 'L';

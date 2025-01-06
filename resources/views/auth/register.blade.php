@@ -26,28 +26,52 @@
 
                 <div class="col-lg-6">
                     <label for="email">Email <b class="text-danger">*</b></label>
-                    <input required name="email" id="email" type="text" placeholder="email"
+                    <input value="{{ old('email') }}" required name="email" id="email" type="text" placeholder="email"
                         class="p-4 form-control mb-3">
                 </div>
 
 
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="password">Make a Password <b class="text-danger">*</b></label>
-                    <input required name="password" id="password" type="password" placeholder="password"
+                    <input  required name="password" id="password" type="password" placeholder="password"
                         class="p-4 form-control mb-3">
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="password_confirmation">Confirm Password <b class="text-danger">*</b></label>
                     <input required name="password_confirmation" id="password_confirmation" type="password" placeholder="confirm password" class="p-4 form-control mb-3">
                 </div>
+
+                <div class="col-lg-3">
+                    <span>are you interested ? <b class="text-danger">*</b></span> <br> <br>
+
+
+                    <label for="yes">YES</label>
+                    <input value="1"  name="is_going" id="yes" type="radio" placeholder="phone"
+                        class=" mb-3">
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <label for="no">NO</label>
+                    <input value="0"  name="is_going" id="no" type="radio" placeholder="phone"
+                        class=" mb-3">
+
+                    @error('is_going')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+
 
                 <div class="col-lg-3">
                     <label for="phone">Contact Number <b class="text-danger">*</b></label>
                     <input required name="phone" id="phone" type="number" placeholder="phone"
                         class="p-4 form-control mb-3">
                 </div>
+
+
+                
 
 
 
@@ -64,8 +88,8 @@
 
                 <div class="col-lg-3">
                     <label for="show_size">T-Shirt Size </label> <br>
-                    <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style="background: #E42625; color:#fff;"
-                        class="btn p-4 w-100">check T-Shirt Size</button>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style=" color:#fff;"
+                        class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
                 </div>
 
 

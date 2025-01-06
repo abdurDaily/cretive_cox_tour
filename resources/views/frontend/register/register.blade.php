@@ -29,13 +29,13 @@
 
 
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="password">Make a Password <b class="text-danger">*</b></label>
                     <input required name="password" id="password" type="password" placeholder="password"
                         class="p-4 form-control mb-3">
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="phone">Contact Number <b class="text-danger">*</b></label>
                     <input required name="phone" id="phone" type="number" placeholder="phone"
                         class="p-4 form-control mb-3">

@@ -12,8 +12,13 @@ class RegistrationController extends Controller
     public function index()
     {
         $registrations = Registration::all();
+        $totalMembers = User::where('is_going', 1)->get();
         return view('frontend.register.register', compact('registrations'));
     }
+
+
+
+
 
 
     public function store(Request $request)
@@ -31,8 +36,15 @@ class RegistrationController extends Controller
     public function viewRegistrations()
     {
         $allRegisters = User::with('additinalMembers')->get();
-        
-        return view('frontend.register.allRegister', compact('allRegisters'));
+        $totalGoinMembers = count(User::where('is_going', 1)->get());
+        $goingMembersDetails = User::where('is_going', 1)->get();
+        $notgoingMembersDetails = User::where('is_going', 0)->get();
+        $GuestDetails = AditionalMember::with('users')->get();
+        // dd($GuestDetails); 
+        $totalMembers = count(User::get());
+        $totalGuest = count(AditionalMember::get());
+        $totalMembersGuest = $totalMembers  + $totalGuest;
+        return view('frontend.register.allRegister', compact('allRegisters', 'totalGoinMembers', 'totalMembers', 'totalGuest', 'totalMembersGuest', 'goingMembersDetails', 'notgoingMembersDetails', 'GuestDetails'));
     }
 
 
