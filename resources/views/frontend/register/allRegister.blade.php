@@ -5,7 +5,7 @@
     <div class="header">
         <h3 class="text-center mb-5">Register Members</h3>
     </div>
-    <table class="table table-striped table-hover text-center">
+    <table class="table-bordered table table-striped table-hover text-center">
         <tr>
             <th>Sn.</th>
             <th>Name</th>
@@ -26,12 +26,45 @@
             <tr>
                 <td>{{ ++$key }}</td>
                 <td>{{ $register->name }}</td>
+                <td>{{ $register->email }}</td>
                 <td>{{ $register->phone }}</td>
                 <td>{{ $register->tshirt_size }}</td>
-                <td>{{ $register->number_of_people	 }}</td>
-                <td>{{ $register->status	 }}</td>
-                
-                <td>{{ $register->opinion }}</td>
+                <td >{{ $register->opinion }}</td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                    {{ $additionalMember->name }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->m_size }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->l_size }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->xl_size }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->xxl_size }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->single_room }}<br> <br>
+                    @endforeach
+                </td>
+                <td valign="middle">
+                    @foreach ($register->additinalMembers as $additionalMember)
+                        {{ $additionalMember->couple_room }}<br> <br>
+                    @endforeach
+                </td>
             </tr>
         @empty
             

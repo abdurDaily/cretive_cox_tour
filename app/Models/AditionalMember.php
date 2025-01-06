@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class AditionalMember extends Model
 {
-    public function additionalMembers()
-{
-    return $this->hasMany(AditionalMember::class);
-}
+    public function users(){
+        return $this->belongsTo(User::class, 'user_id'); // Replace 'user_id' with the actual foreign key column name in the `aditional_members` table.
+    }
 }

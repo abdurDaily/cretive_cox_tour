@@ -30,8 +30,8 @@ class RegistrationController extends Controller
 
     public function viewRegistrations()
     {
-        $allRegisters = AditionalMember::with('user')->get();
-        dd($allRegisters);
+        $allRegisters = User::with('additinalMembers')->get();
+        // dd($allRegisters);
         return view('frontend.register.allRegister', compact('allRegisters'));
     }
 
@@ -39,6 +39,7 @@ class RegistrationController extends Controller
 
     // ADDITIONAL MEMBERS ADD 
     public function additionalMembers(Request $request){
+        // dd($request->all());
       $addAdditionalMembers = new AditionalMember();
       $addAdditionalMembers->name = $request->name;
       $addAdditionalMembers->m_size = $request->m_size;

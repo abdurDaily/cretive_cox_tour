@@ -17,7 +17,7 @@ class AdditionalController extends Controller
      public function storeMembers(Request $request){
         $addAdditionalMembers = new AditionalMember();
         $addAdditionalMembers->name = $request->name;
-        $addAdditionalMembers->user = Auth::user()->id;
+        $addAdditionalMembers->user_id = Auth::user()->id;
         $addAdditionalMembers->auth_email = Auth::user()->email;
         $addAdditionalMembers->m_size = $request->m_size;
         $addAdditionalMembers->l_size = $request->l_size;

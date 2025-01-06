@@ -9,8 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    public function additinalMembers()
-    {
+    public function additinalMembers(){
         return $this->hasMany(AditionalMember::class);
     }
     /** @use HasFactory<\Database\Factories\UserFactory> */

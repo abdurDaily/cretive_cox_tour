@@ -11,7 +11,7 @@
             @endif
             <span style="color: #E42625;"><iconify-icon icon="carbon:view-filled" width="24"
                     height="24"></iconify-icon></span>
-            <h3 class="text-center mb-3">Creative Cox's Tour 2025</h3>
+            <h3 class="text-center mb-3">Creative Cox's Tour 2025 </h3>
         </div>
 
         <div class="col-lg-4 text-center mx-auto">
