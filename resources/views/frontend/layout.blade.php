@@ -18,6 +18,9 @@
             body{
                 font-family: "Poppins", serif;  
             }
+            .table-v-center{
+                vertical-align: middle;
+            }
         </style>
 </head>
 

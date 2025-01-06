@@ -31,7 +31,7 @@ class RegistrationController extends Controller
     public function viewRegistrations()
     {
         $allRegisters = User::with('additinalMembers')->get();
-        // dd($allRegisters);
+        
         return view('frontend.register.allRegister', compact('allRegisters'));
     }
 
