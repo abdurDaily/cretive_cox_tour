@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->longText('transaction_name');
-            $table->integer('transaction_amount');
+            $table->string('auth_user');
+            $table->enum('transaction_category', ['transport', 'hotel', 'breakfast', 'lunch','snacks','dinner','others']);
+            $table->longText('transaction_description')->nullable();
+            $table->integer('add_amount')->nullable();
+            $table->integer('cost_amount')->nullable();
+            $table->integer('additional_person')->nullable();
+            $table->integer('additional_person_amount')->nullable();
             $table->timestamps();
         });
     }

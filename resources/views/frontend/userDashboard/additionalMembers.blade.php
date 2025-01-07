@@ -17,9 +17,7 @@
                     <label for="name">Name <b class="text-danger">*</b></label>
                     <input name="name" value="{{ old('name') }}" id="name" type="text" placeholder="name"
                         class="p-4 form-control mb-3">
-                    @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <span class="text-danger" id="name-error" style="display: none;">Please provide a name.</span>
                 </div>
 
                 <div class="col-lg-6 mb-3">
@@ -114,43 +112,49 @@
             $(document).ready(function() {
                 $('#register').on('submit', function(e) {
                     e.preventDefault(); // Prevent form submission
-
+                
                     // Reset error messages
-                    $('#tshirt-error, #room-error-message').hide();
-
+                    $('#tshirt-error, #room-error-message, #name-error').hide();
+                
+                    // Validate name field
+                    const name = $('input[name="name"]').val().trim();
+                    let isValid = true;
+                
+                    if (!name) {
+                        $('#name-error').show(); // Show name error message
+                        isValid = false;
+                    }
+                
                     // Check if at least one T-shirt size is provided
-                    const mSize = $('input[name="m_size"]').val();
-                    const lSize = $('input[name="l_size"]').val();
-                    const xlSize = $('input[name="xl_size"]').val();
-                    const xxlSize = $('input[name="xxl_size"]').val();
-
-                    const isTshirtProvided = mSize || lSize || xlSize || xxlSize;
-
+                    const mSize = parseInt($('input[name="m_size"]').val()) || 0;
+                    const lSize = parseInt($('input[name="l_size"]').val()) || 0;
+                    const xlSize = parseInt($('input[name="xl_size"]').val()) || 0;
+                    const xxlSize = parseInt($('input[name="xxl_size"]').val()) || 0;
+                
+                    const isTshirtProvided = mSize > 0 || lSize > 0 || xlSize > 0 || xxlSize > 0;
+                
                     // Check if single room or couple room is provided
-                    const singleRoom = $('input[name="single_room"]').val();
-                    const coupleRoom = $('input[name="couple_room"]').val();
-
-                    const isRoomProvided = singleRoom || coupleRoom;
-
-                    // Validate at least one field is filled
-                    if (!isTshirtProvided && !isRoomProvided) {
-                        // Show error messages
-                        $('#tshirt-error').show();
-                        $('#room-error-message').show();
-                        return false; // Stop form submission
-                    }
-
-                    // If T-shirt sizes are not provided, check rooms
+                    const singleRoom = parseInt($('input[name="single_room"]').val()) || 0;
+                    const coupleRoom = parseInt($('input[name="couple_room"]').val()) || 0;
+                
+                    const isRoomProvided = singleRoom > 0 || coupleRoom > 0;
+                
+                    // Validate T-shirt sizes
                     if (!isTshirtProvided) {
-                        if (!isRoomProvided) {
-                            // Show error for rooms
-                            $('#room-error-message').show();
-                            return false; // Stop form submission
-                        }
+                        $('#tshirt-error').show(); // Show T-shirt error message
+                        isValid = false;
                     }
-
-                    // If validation passes, submit the form
-                    this.submit();
+                
+                    // Validate rooms
+                    if (!isRoomProvided) {
+                        $('#room-error-message').show(); // Show room error message
+                        isValid = false;
+                    }
+                
+                    // If all validations pass, submit the form
+                    if (isValid) {
+                        $(this).unbind('submit').submit();
+                    }
                 });
             });
         </script>

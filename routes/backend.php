@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\Home\HomeController;
 use App\Http\Controllers\Backend\Login\loginController;
 use App\Http\Controllers\Backend\Transaction\TransactionController;
 use App\Http\Controllers\Backend\Transport\TransportController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,7 @@ Route::prefix('admin')->name('transaction.')->group(function(){
     Route::get('/transactions', [TransactionController::class, 'transactionIndex'])->name('transactions');
     Route::post('/transactions', [TransactionController::class, 'transactionStore'])->name('store');
     Route::get('/view-transactions', [TransactionController::class, 'viewtransaction'])->name('view');
+    Route::get('/transactions-pdf', [PDFController::class, 'transactionPDF'])->name('pdf');
 });
 
 

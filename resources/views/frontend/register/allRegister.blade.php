@@ -3,13 +3,8 @@
 
     <div class="table-responsive shadow-sm  p-2 mt-3">
         <div class="header">
-            <h3 class="text-center mb-3">Register Members</h3>
-            <div class="d-flex justify-content-between">
-                <p>Total Official Members Going: <b class="btn-dark btn">{{ $totalGoinMembers }} / {{ $totalMembers }}</b>
-                </p>
-                <p>Total Guest : <b class="btn-dark btn">{{ $totalGuest }} </b> </p>
-                <p>Total Members : <b class="btn-dark btn">{{ $totalMembersGuest }} </b> </p>
-            </div>
+            <h3 class="text-center mb-3">Register Members </h3>
+            
 
 
             <div class="d-flex mb-3">
@@ -34,6 +29,50 @@
                 </button>
             </div>
 
+
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <td colspan="3" class="bg-dark text-light" style="text-align: center">Members Status </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Official Members Going {{  $totalGoinMembers }} / {{ $totalMembers }}
+                        </td>
+                        <td>
+                            Total Guest : {{ $totalGuest }}
+                        </td>
+                        <td>
+                            Total Members :    {{ $totalMembersGuest }}
+                        </td>
+                  
+                    </tr>
+                </table>
+            </div>
+            
+
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <td class="bg-dark text-light" colspan="7" style="text-align: center">Record Status</td>
+                    </tr>
+                    <tr>
+                        <td>M - {{ $m_size }}</td>
+                        <td>L - {{ $l_size }}</td>
+                        <td>XL - {{ $xl_size }}</td>
+                        <td>XXL - {{ $xxl_size }}</td>
+                        <td>Total - {{ $total_t_shirt }}</td>
+                        <td>Single Room - {{ $single_room }}</td>
+                        <td>couple Room - {{ $couple_room }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+
+
+         
 
             <!-- Modal going -->
             <div class="modal fade" id="goingMembers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
