@@ -1,5 +1,21 @@
 @extends('backend.layout')
 @section('backend_contains')
+@push('backend_css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 73px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e0d9d9;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        display: none;
+    }
+</style>
+@endpush
 
  
     <form id="transaction" action="{{ route('backend.transaction.store') }}" method="post" class="shadow p-4 mt-3">
@@ -34,15 +50,24 @@
 
 
             <div class="row mb-0 mx-auto ">
-                <div class="col-lg-6 px-2">
+                <div class="col-lg-4 px-2">
                     <label for="cost_amount">Cost Amount :</label>
                     <input type="number" name="cost_amount" placeholder="transaction amount"
                         class="mb-3 form-control p-4" id="cost_amount">
                 </div>
-                <div class="col-lg-6 px-2">
+                <div class="col-lg-4 px-2">
                     <label for="add_amount">Add Amount :</label>
                     <input type="number" name="add_amount" placeholder="add amount" class="mb-3 form-control p-4"
                         id="add_amount">
+                </div>
+                <div class="col-lg-4">
+                    <label for="member_cost">Member Cost</label>
+                    <select class="select_member form-control" name="additional_cost_user">
+                        <option selected disabled>--- select members ---</option>
+                            @foreach ($users as $user)
+                              <option value="{{ $user->id }}" >{{ $user->name }}</option>
+                            @endforeach
+                      </select>
                 </div>
             </div>
 
@@ -57,6 +82,7 @@
             integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             $(function() {
                 // Function to set negative values to 0
@@ -147,6 +173,15 @@
                 setNegativeValuesToZero();
                 updateSubmitButtonState();
             });
+
+
+
+
+            // SELECT 
+            $('.select_member').select2();
         </script>
+
+
+
     @endpush
 @endsection

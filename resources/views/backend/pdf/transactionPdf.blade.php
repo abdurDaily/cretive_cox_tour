@@ -20,10 +20,36 @@
     <div class="heading">
 
         <h4 style="font-size: 20px; text-align:center;">Creative IT Tour' 25 Cost</h4>
-        <span>Total Amount Provided by the Company: 10000 /-</span> <br>
-        <span>Total expence : 10000 /-</span> <br> <br>
+        <span>Total Amount Provided by the Company: <b>{{ $totalAdd }}</b> /-</span> <br>
+        <span>Total expence : <b>{{ $totalCost }}</b> /-</span> <br> 
+        <span>Payment Status : <b style="color: {{ $costStatus < 0 ? 'red' : 'green' }}" >{{ $costStatus  }}  /-</b></span> <br> <br>
 
     </div>
+
+    
+    <table border="1" cellspacing="0" cellpadding="0" style="width:100%; text-align:center; ">
+        <tr >
+            <th>Sn</th>
+            <th>User  Name</th>
+            <th>Add Amount</th>
+            <th>Cost Amount</th>
+            <th>T. Add </th>
+            <th>T. Cost </th>
+        </tr>
+
+        @foreach ($auth_user_transaction as $key => $auth_transaction)
+        <tr>
+            <td style="padding: 10px;">{{ ++$key }}</td>
+            <td>{{ $auth_transaction->users->name }}</td>
+            <td>{{ $auth_transaction->add_amount }} /-</td>
+            <td>{{ $auth_transaction->cost_amount }} /-</td>
+            <td>{{ $userTotals[$auth_transaction->user_id]['total_add_amount'] }} /-</td>
+            <td>{{ $userTotals[$auth_transaction->user_id]['total_cost_amount'] }} /-</td>
+        </tr>
+        @endforeach
+    </table>
+
+    <br>
 
     <table border="1" cellspacing="0" cellpadding="0" style="width:100%; ">
         <tr>
@@ -39,8 +65,10 @@
             <tr align="center">
                 <td style="padding: 10px;">{{ ++$key }}</td>
                 <td>{{ $transaction->auth_user }}</td>
-                <td>{{ $transaction->created_at ? $transaction->created_at->format('d/m/Y') : 'N/A' }} |
-                    {{ $transaction->created_at->format('h:i A') }}</td>
+                <td>
+                    {{ $transaction->created_at ? $transaction->created_at->format('d/m/Y') : 'N/A' }} |
+                    {{ $transaction->created_at ? $transaction->created_at->format('h:i A') : 'N/A' }}
+                </td>
                 <td>{{ $transaction->transaction_category }}</td>
                 <td>{{ $transaction->add_amount > 0 ? $transaction->add_amount : 0 }} /-</td>
                 <td>{{ $transaction->cost_amount > 0 ? $transaction->cost_amount : 0 }} /-</td>

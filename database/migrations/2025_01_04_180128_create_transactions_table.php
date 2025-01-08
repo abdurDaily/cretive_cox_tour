@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('auth_user');
+            $table->foreignId('additional_cost_user')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->enum('transaction_category', ['transport', 'hotel', 'breakfast', 'lunch','snacks','dinner','others']);
             $table->longText('transaction_description')->nullable();
             $table->integer('add_amount')->nullable();
             $table->integer('cost_amount')->nullable();
-            $table->integer('additional_person')->nullable();
-            $table->integer('additional_person_amount')->nullable();
+            // $table->integer('additional_person')->nullable();
+            // $table->integer('additional_person_amount')->nullable();
             $table->timestamps();
         });
     }

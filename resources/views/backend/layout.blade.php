@@ -21,6 +21,8 @@
                 font-family: "Poppins", serif;  
             }
         </style>
+
+        @stack('backend_css')
 </head>
 
 <body>

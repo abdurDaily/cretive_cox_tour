@@ -12,6 +12,13 @@ class User extends Authenticatable
     public function additinalMembers(){
         return $this->hasMany(AditionalMember::class);
     }
+
+
+    // TRANSACTION 
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
