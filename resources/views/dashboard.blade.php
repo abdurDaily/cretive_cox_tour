@@ -61,6 +61,20 @@
                     </h4>
                 </div>
             </div>
+
+    
+            <div class="col-lg-4 text-center">
+                <div class="shadow p-5">
+                    <span
+                        style="width:40px;height:40px;display:inline-block;background:#E42625;color:#fff; text-align:center; line-height:50px;border-radius:50%;">
+                        <iconify-icon icon="healthicons:money-bag" width="24" height="24"></iconify-icon>
+                    </span>
+                    <h4 class="mt-3">
+                        <a href="{{ route('backend.transaction.individual') }}"
+                            style="text-decoration: none;color:#000;">Individual Cost</a>
+                    </h4>
+                </div>
+            </div>
     
 
 

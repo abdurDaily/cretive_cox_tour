@@ -58,6 +58,9 @@ Route::prefix('admin')->name('transaction.')->group(function(){
     Route::post('/transactions', [TransactionController::class, 'transactionStore'])->name('store');
     Route::get('/view-transactions', [TransactionController::class, 'viewtransaction'])->name('view');
     Route::get('/transactions-pdf', [PDFController::class, 'transactionPDF'])->name('pdf');
+   
+    // INDIVIDUAL COSTING
+    Route::get('/individual-cost', [TransactionController::class, 'individualCost'])->name('individual');
 });
 
 

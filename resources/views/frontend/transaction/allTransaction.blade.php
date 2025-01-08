@@ -32,6 +32,7 @@
                 <th>Category</th>
                 <th>Description</th>
                 <th>Date</th>
+                <th>Member</th>
                 <th>Add Amount</th>
                 <th>Expence Amount</th>
             </tr>
@@ -41,18 +42,19 @@
                     <td>{{ ++$key }}</td>
                     <td>{{ Str::limit($transaction->auth_user, 10, '...') }}</td>
                     <td>{{ $transaction->transaction_category }}</td>
-                    <td>{{ $transaction->transaction_description }}</td>
+                    <td>{{ $transaction->transaction_description ? $transaction->transaction_description : '-' }}</td>
                     {{-- <td>{{ $transaction->created_at->format('d/m/Y')}} </td> --}}
                     <td>
                         {{ $transaction->created_at ? $transaction->created_at->format('d/m/Y') : 'N/A' }} |
                         {{ $transaction->created_at ? $transaction->created_at->format('h:i A') : 'N/A' }}
                     </td>
+                    <td>{{ $transaction->additional_cost_user }}</td>
                     <td>{{ $transaction->add_amount > 0 ? $transaction->add_amount : 0 }} /-</td>
                     <td>{{ $transaction->cost_amount > 0 ? $transaction->cost_amount : 0 }} /-</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-danger py-5">No Data found!</td>
+                    <td colspan="8" class="text-center text-danger py-5">No Data found!</td>
                 </tr>
             @endforelse
         </table>
