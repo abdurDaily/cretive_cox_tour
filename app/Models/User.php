@@ -16,7 +16,7 @@ class User extends Authenticatable
 
     // TRANSACTION 
     public function transactions(){
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class, 'additional_cost_user');
     }
 
     /** @use HasFactory<\Database\Factories\UserFactory> */

@@ -11,35 +11,23 @@
                 <th>Phone</th>
                 <th>Cost /-</th>
                 <th>Paid /-</th>
-                <th>Status</th>
+                <th>s.room</th>
+                <th>c.room</th>
             </tr>
-            <tbody>
-                @forelse($summedCosts as $key =>  $summedCostAndAddAmount)
-                    @php
-                        $userId = $summedCostAndAddAmount->additional_cost_user;
-                        $user = $users[$userId];
-                    @endphp
-                    <tr>
-                        <td style="padding: 20px 0;">{{ ++$key }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->phone }}</td>
-                        <td>{{ $summedCostAndAddAmount->total_cost }} /-</td>
-                        <td>{{ $summedCostAndAddAmount->total_add_amount ? $summedCostAndAddAmount->total_add_amount : 0 }} /-</td>
-                        <td>
-                            <span class="text-light btn btn-sm bg-{{$summedCostAndAddAmount->total_cost <= $summedCostAndAddAmount->total_add_amount ? 'success' : 'danger' }}">
-                              {{ $summedCostAndAddAmount->total_cost <= $summedCostAndAddAmount->total_add_amount ? 'paid' : 'due' }}
-                            </span>
-                        </td>
-                    </tr>
-                    @empty
-
+            
+            @forelse ($users as $key => $user)
                 <tr>
-                    <td>no record found!</td>
+                    <td>{{ ++$key }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->phone }}</td>
+                    <td>{{ $user->cost_amount }}</td>
+                    <td>{{ $user->add_amount }}</td>
+                    <td>{{ $user->single_rooms }}</td>
+                    <td>{{ $user->couple_rooms }}</td>
                 </tr>
-
- 
-                @endforelse
-            </tbody>
+            @empty
+                
+            @endforelse
         </table>
     </div>
 </div>

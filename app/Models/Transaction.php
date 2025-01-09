@@ -11,5 +11,8 @@ class Transaction extends Model
     public function users(){
         return $this->BelongsTo(User::class, "user_id");
     }
+    public function costUsers(){
+        return $this->BelongsTo(User::class, "additional_cost_user");
+    }
 
 }
