@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend\Transaction;
 
+use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Models\AditionalMember;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
@@ -49,6 +50,10 @@ class TransactionController extends Controller
     // INDIVIDUAL COSTING 
     public function individualCost()
     {
+
+        $users = User::has('transactions')->get();
+        dd($users);
+
         $summedCosts = Transaction::whereNotNull('additional_cost_user')
         ->selectRaw("additional_cost_user")
         ->selectRaw('COUNT(additional_cost_user) as count')
@@ -56,6 +61,17 @@ class TransactionController extends Controller
         ->selectRaw('SUM(add_amount) as total_add_amount')
         ->groupBy('additional_cost_user')
         ->get();
+
+
+         // Fetch and sum single_room and couple_room for AditionalMember grouped by user_id
+         $roomCosts = AditionalMember::with('transaction')->selectRaw('user_id')
+         ->selectRaw('SUM(single_room) as total_single_room')
+         ->selectRaw('SUM(couple_room) as total_couple_room')
+         ->groupBy('user_id')
+         ->get()
+         ->keyBy('user_id'); 
+
+        dd($summedCosts);
 
         $users = User::whereIn('id', $summedCosts->pluck('additional_cost_user'))->get()->keyBy('id');
 
