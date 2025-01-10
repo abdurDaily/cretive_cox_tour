@@ -20,13 +20,50 @@
     <div class="heading">
 
         <h4 style="font-size: 20px; text-align:center;">Creative IT Tour' 25 Cost</h4>
-        <span>Total Amount Provided by the Company: <b>{{ $totalAdd }}</b> /-</span> <br>
+        {{-- <span>Total Amount Provided by the Company: <b>{{ $totalAdd }}</b> /-</span> <br>
         <span>Total expence : <b>{{ $totalCost }}</b> /-</span> <br> 
         <span>Payment Status : <b style="color: {{ $costStatus < 0 ? 'red' : 'green' }}" >{{ $costStatus  }}  /-</b></span> <br> <br>
-
+         --}}
     </div>
 
+    <h4>Category wise costs:</h4>
+    <table border="1" cellspacing="0" cellpadding="0" style="width:100%; text-align:center;">
+        <thead>
+            <tr>
+                <th style="padding: 10px;">Title</th>
+                <th>Total Add Amount</th>
+                <th>Total Cost Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Static Row for T-Shirt -->
+            <tr>
+                <td style="padding: 10px;">T-Shirt</td>
+                <td>{{ $totalTshirt }} * price = amount</td>
+                <td>{{ number_format($totalTshirt * $price = 1, 2) }}</td> <!-- Assuming $price is defined -->
+            </tr>
     
+            <!-- Dynamic Rows for Transaction Categories -->
+            @foreach($transactionSums as $category)
+                <tr>
+                    <td style="padding: 10px;">{{ $category->transaction_category }}</td>
+                    <td>{{ number_format($category->total_add_amount, 2) }}</td>
+                    <td>{{ number_format($category->total_cost_amount, 2) }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="padding: 10px;"><b>Total</b></td>
+                <td><b>{{ number_format($transactionSums->sum('total_add_amount') + ($totalTshirt * $price), 2) }}</b></td>
+                <td><b>{{ number_format($transactionSums->sum('total_cost_amount') + ($totalTshirt * $price), 2) }}</b></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br> <br>
+
+
+    <h4>Author Total Expence :</h4>
     <table border="1" cellspacing="0" cellpadding="0" style="width:100%; text-align:center; ">
         <tr >
             <th>Sn</th>
@@ -37,20 +74,25 @@
             <th>T. Cost </th>
         </tr>
 
-        @foreach ($auth_user_transaction as $key => $auth_transaction)
+        @foreach ($userTotals as $user_id => $totals)
+        @php
+            $user = $auth_user_transaction->firstWhere('user_id', $user_id)->users;
+        @endphp
         <tr>
-            <td style="padding: 10px;">{{ ++$key }}</td>
-            <td>{{ $auth_transaction->users->name }}</td>
-            <td>{{ $auth_transaction->add_amount }} /-</td>
-            <td>{{ $auth_transaction->cost_amount }} /-</td>
-            <td>{{ $userTotals[$auth_transaction->user_id]['total_add_amount'] }} /-</td>
-            <td>{{ $userTotals[$auth_transaction->user_id]['total_cost_amount'] }} /-</td>
+            <td style="padding: 10px;">{{ ++$loop->index }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $totals['total_add_amount'] }} /-</td>
+            <td>{{ $totals['total_cost_amount'] }} /-</td>
+            <td>{{ $totals['total_add_amount'] }} /-</td>
+            <td>{{ $totals['total_cost_amount'] }} /-</td>
         </tr>
         @endforeach
     </table>
 
-    <br>
 
+
+    <br> <br>
+    <h4>Expence Details :</h4>
     <table border="1" cellspacing="0" cellpadding="0" style="width:100%; ">
         <tr>
             <th style="padding: 10px;">Sn.</th>
