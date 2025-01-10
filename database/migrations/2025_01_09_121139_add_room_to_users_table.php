@@ -9,24 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('single_room')->nullable()->after('phone');
-            $table->boolean('couple_room')->nullable()->after('single_room');
-        });
-    }
+    // public function up(): void
+    // {
+    //     Schema::table('users', function (Blueprint $table) {
+    //         $table->boolean('single_room')->nullable()->after('phone');
+    //         $table->boolean('couple_room')->nullable()->after('single_room');
+    //     });
+    // }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumns([
-                'single_room',
-                'couple_room',
-            ]);
-        });
-    }
+    // public function down(): void
+    // {
+    //     Schema::table('users', function (Blueprint $table) {
+    //         $table->dropColumns([
+    //             'single_room',
+    //             'couple_room',
+    //         ]);
+    //     });
+    // }
 };

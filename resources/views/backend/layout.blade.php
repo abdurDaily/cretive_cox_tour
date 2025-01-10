@@ -50,6 +50,10 @@
                             <button type="submit" class="nav-link active" aria-current="page">Logout</button>
                         </form>
                     </li>
+
+                    <li class="nav-item">
+                        <span class="nav-link active text-danger    ">Hi,  {{ Str::limit(Auth::user()->name, 6, '...') }} </span>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -61,11 +61,16 @@ Route::prefix('admin')->name('transaction.')->group(function(){
    
     // INDIVIDUAL COSTING
     Route::get('/individual-cost', [TransactionController::class, 'individualCost'])->name('individual');
+    Route::get('/individual-details/{id}', [TransactionController::class, 'individualDetails'])->name('individual.details');
+    Route::get('/edit-individual-details/{id}', [TransactionController::class, 'editIndividualDetails'])->name('edit.individual.details');
+    Route::put('/update-individual-details/{id}', [TransactionController::class, 'updateIndividualDetails'])->name('update.individual.details');
 });
 
 
-//BACKEND Additiobnal
+//BACKEND Additiobnalf
 Route::prefix('additional')->name('additional.')->group(function(){
     Route::get('/additional-members', [AdditionalController::class, 'additionalIndex'])->name('index');
     Route::post('/additional-members', [AdditionalController::class, 'storeMembers'])->name('store');
+    Route::get('/edit-additional-member/{id}', [AdditionalController::class, 'editMember'])->name('edit');
+    Route::put('/edit-additional-member/{id}', [AdditionalController::class, 'updateMember'])->name('update');
 });

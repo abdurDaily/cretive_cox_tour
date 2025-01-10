@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\AditionalMember;
 use App\Http\Controllers\Controller;
+use App\Models\RoomCost;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
@@ -51,7 +52,7 @@ class TransactionController extends Controller
     public function individualCost()
     {
         $users = User::with('transactions','additinalMembers')->get();
-        
+        // dd($users);
         $usersCosting = collect();
        
         foreach ($users as $user) {
@@ -63,49 +64,72 @@ class TransactionController extends Controller
             $user->single_rooms = $user->additinalMembers->sum('single_room') + ($user->single_room ? 1 : 0);
             $user->couple_rooms = $user->additinalMembers->sum('couple_room') + ($user->couple_room ? 1 : 0);
 
+
+            
         }
         
-        
+        //* INDIVIDUAL ROOM COST 
+        $individualRoomCost = RoomCost::select('id','single_room_cost','couple_room_cost')->first();
 
-         // $transactions = Transaction::whereNotNull('additional_cost_user')
-        // ->with('costUsers.additinalMembers')
-        // ->get()->groupBy('additional_cost_user');
-        // foreach($transactions as $item){
-        //     $add_amount = $item->flatten()->sum('add_amount');
-        //     $cost_amount = $item->flatten()->sum('cost_amount');
-        //     $single_room = $item->flatten()->pluck('costUsers.additinalMembers')->flatten()->unique('id')->sum('single_room');
-        //     $couple_room = $item->flatten()->pluck('costUsers.additinalMembers')->flatten()->unique('id')->sum('couple_room');
-        //     $costUser = $item->flatten()->pluck('costUsers')->unique('id')->first();
-        //     $usersCosting->push(compact('add_amount', 'cost_amount', 'single_room', 'couple_room','costUser'));
-        // }
-        
-        // dd($usersCosting);
-
-
-        // $summedCosts = Transaction::whereNotNull('additional_cost_user')
-        // ->selectRaw("additional_cost_user")
-        // ->selectRaw('COUNT(additional_cost_user) as count')
-        // ->selectRaw('SUM(cost_amount) as total_cost')
-        // ->selectRaw('SUM(add_amount) as total_add_amount')
-        // ->groupBy('additional_cost_user')
-        // ->get();
-
-
-         // Fetch and sum single_room and couple_room for AditionalMember grouped by user_id
-        //  $roomCosts = AditionalMember::with('transaction')->selectRaw('user_id')
-        //  ->selectRaw('SUM(single_room) as total_single_room')
-        //  ->selectRaw('SUM(couple_room) as total_couple_room')
-        //  ->groupBy('user_id')
-        //  ->get()
-        //  ->keyBy('user_id'); 
-
-        // dd($summedCosts);
-
-        // $users = User::whereIn('id', $summedCosts->pluck('additional_cost_user'))->get()->keyBy('id');
-
-        return view('backend.individualCost.individual', compact('users'));
+        // dd($individualRoomCost);
+        return view('backend.individualCost.individual', compact('users','individualRoomCost'));
     }
 
 
+
+    //* INDIVIDUAL DETAILS 
+    public function individualDetails($id){
+        $user = User::with('transactions','additinalMembers')->find($id);
+        // Check if additionalMembers exists and is not null
+
+        // dd($user);
+
+        if ($user->additinalMembers) {
+            // Calculate the total size
+            $totalSize = $user->additinalMembers->sum('m_size') +
+                         $user->additinalMembers->sum('l_size') +
+                         $user->additinalMembers->sum('xl_size') +
+                         $user->additinalMembers->sum('xxl_size');
+        } else {
+            $totalSize = 0; 
+        }
+
+
+        return view('backend.individualCost.individualDetails', compact('user','totalSize'));
+    }
+
+
+
+    //*EDIT INDIVIDUAL DATA 
+    public function editIndividualDetails($id){
+        $editTransaction = Transaction::with('users')->where('additional_cost_user',$id)->first();
+        // dd($editTransaction);
+        // $test = User::with('transactions')->first();
+        
+        $editTransaction = Transaction::with(['users' => function ($query) {
+            $query->where('id', 'additional_cost_user');
+        }])->first();
+
+        // dd($editTransaction);
+
+
+        $users = User::get();
+        // $user = User::with('transactions','additinalMembers')->find($id);
+        return view('backend.transaction.editTransaction', compact('editTransaction', 'users'));
+    }
+
+
+    //**UPDATE TRANSACTION  */
+    public function updateIndividualDetails(Request $request, $id){
+        $updateTransaction = Transaction::find($id);
+        $updateTransaction->additional_cost_user = $request->additional_cost_user;
+        $updateTransaction->auth_user = Auth::user()->name;
+        $updateTransaction->user_id = Auth::user()->id;
+        $updateTransaction->transaction_category = $request->transaction_category;
+        $updateTransaction->transaction_description = $request->transaction_description;
+        $updateTransaction->add_amount = $request->add_amount;
+        $updateTransaction->cost_amount = $request->cost_amount;
+        $updateTransaction->save();
+    }
     
 }

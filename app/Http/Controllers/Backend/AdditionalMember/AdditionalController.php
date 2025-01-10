@@ -28,4 +28,32 @@ class AdditionalController extends Controller
         $addAdditionalMembers->save();
         return redirect()->route('home')->with('success','additional members added successfully!');
       }
+
+
+
+    //   EDIT ADDITIONALL MEMBER
+    public function editMember($id){
+        $editMember = AditionalMember::find($id);
+        // dd($editMember);
+        return view('backend.AddMembers.editAdditionalMember', compact('editMember'));
+    }
+
+
+
+    //*update additional member 
+    public function updateMember(Request $request, $id){
+        // dd($request->all());
+        $editMember = AditionalMember::find($id);
+        $editMember->name = $request->name;
+        $editMember->user_id = Auth::user()->id;
+        $editMember->auth_email = Auth::user()->email;
+        $editMember->m_size = $request->m_size;
+        $editMember->l_size = $request->l_size;
+        $editMember->xl_size = $request->xl_size;
+        $editMember->xxl_size = $request->xxl_size;
+        $editMember->single_room = $request->single_room;
+        $editMember->couple_room = $request->couple_room;
+        $editMember->save();
+        return redirect()->route('home')->with('success','additional members update successfully!');
+    }
 }
