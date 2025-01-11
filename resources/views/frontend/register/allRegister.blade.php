@@ -1,9 +1,9 @@
 @extends('frontend.layout')
 @section('frontend_contains')
 
-    <div class="table-responsive shadow-sm  p-2 mt-3">
+    <div class="table-responsive   p-2 mt-3">
         <div class="header">
-            <h3 class="text-center mb-3">Register Members </h3>
+            <h3 class="text-center mb-3">Register Members Summary</h3>
             
 
 

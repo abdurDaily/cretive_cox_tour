@@ -1,7 +1,7 @@
 @extends('backend.layout')
 @section('backend_contains')
 
-<div class="shadow p-4 mt-3">
+<div class=" p-4 mt-3">
     <h4>individual cost</h4>
     <div class="table-responsive">
         <table style="vertical-align: middle; text-align:center;" class="table table-striped table-bordered table-hover">

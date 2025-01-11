@@ -155,7 +155,7 @@
                             }).then(() => {
                                 // Redirect after the alert is closed
                                 window.location.href =
-                                    "{{ route('backend.admin.dashboard') }}"; // Fixed syntax error
+                                    "{{ route('dashboard') }}"; // Fixed syntax error
                             });
                         },
                         error: function(xhr) {

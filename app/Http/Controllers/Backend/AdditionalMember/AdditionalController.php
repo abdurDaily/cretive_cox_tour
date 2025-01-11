@@ -26,7 +26,7 @@ class AdditionalController extends Controller
         $addAdditionalMembers->single_room = $request->single_room;
         $addAdditionalMembers->couple_room = $request->couple_room;
         $addAdditionalMembers->save();
-        return redirect()->route('home')->with('success','additional members added successfully!');
+        return redirect()->route('dashboard')->with('success','additional members added successfully!');
       }
 
 
@@ -54,6 +54,6 @@ class AdditionalController extends Controller
         $editMember->single_room = $request->single_room;
         $editMember->couple_room = $request->couple_room;
         $editMember->save();
-        return redirect()->route('home')->with('success','additional members update successfully!');
+        return redirect()->route('dashboard')->with('success','additional members update successfully!');
     }
 }

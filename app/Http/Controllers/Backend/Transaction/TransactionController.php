@@ -79,45 +79,49 @@ class TransactionController extends Controller
 
     //* INDIVIDUAL DETAILS 
     public function individualDetails($id){
-        $user = User::with('transactions','additinalMembers')->find($id);
-        // Check if additionalMembers exists and is not null
-
-        // dd($user);
-
-        if ($user->additinalMembers) {
-            // Calculate the total size
-            $totalSize = $user->additinalMembers->sum('m_size') +
-                         $user->additinalMembers->sum('l_size') +
-                         $user->additinalMembers->sum('xl_size') +
-                         $user->additinalMembers->sum('xxl_size');
-        } else {
-            $totalSize = 0; 
+        // Fetch the user with their transactions and additionalMembers
+        $user = User::with('transactions', 'additinalMembers')->find($id);
+    
+        // Check if the user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'User  not found.');
         }
-
-
-        return view('backend.individualCost.individualDetails', compact('user','totalSize'));
+    
+        // Initialize sums for each t-shirt size
+        $totalM = 0;
+        $totalL = 0;
+        $totalXL = 0;
+        $totalXXL = 0;
+    
+        // Check if additionalMembers exists and is not null
+        if ($user->additinalMembers) {
+            // Calculate the total sum for each t-shirt size
+            $totalM = $user->additinalMembers->sum('m_size');
+            $totalL = $user->additinalMembers->sum('l_size');
+            $totalXL = $user->additinalMembers->sum('xl_size');
+            $totalXXL = $user->additinalMembers->sum('xxl_size');
+        }
+    
+        // Calculate the total t-shirt size
+        $totalTShirt = $totalM + $totalL + $totalXL + $totalXXL;
+    
+        // Pass the user and t-shirt sums to the view
+        return view('backend.individualCost.individualDetails', compact('user', 'totalM', 'totalL', 'totalXL', 'totalXXL', 'totalTShirt'));
     }
 
 
+    //* EDIT INDIVIDUAL DATA
+    public function editIndividualDetails($id)
+    {
+        // Fetch the transaction to be edited with its associated user
+        $editTransaction = Transaction::with('users')->find($id);
 
-    //*EDIT INDIVIDUAL DATA 
-    public function editIndividualDetails($id){
-        $editTransaction = Transaction::with('users')->where('additional_cost_user',$id)->first();
-        // dd($editTransaction);
-        // $test = User::with('transactions')->first();
-        
-        $editTransaction = Transaction::with(['users' => function ($query) {
-            $query->where('id', 'additional_cost_user');
-        }])->first();
+        // Fetch all users to populate the dropdown
+        $users = User::all();
 
-        // dd($editTransaction);
-
-
-        $users = User::get();
-        // $user = User::with('transactions','additinalMembers')->find($id);
+        // Pass the data to the view
         return view('backend.transaction.editTransaction', compact('editTransaction', 'users'));
     }
-
 
     //**UPDATE TRANSACTION  */
     public function updateIndividualDetails(Request $request, $id){

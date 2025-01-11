@@ -36,7 +36,6 @@
     </table>
 </div>
 
-
 <div class="table-responsive">
     <div class="d-flex justify-content-between py-3">
         <h4>Hotel Costs</h4>
@@ -45,29 +44,35 @@
     <table style="vertical-align: middle; text-align:center;" class="table table-striped table-bordered table-hover">
         <tr>
             <th>#</th>
+            <th>M Size</th>
+            <th>L Size</th>
+            <th>XL Size</th>
+            <th>XXL Size</th>
             <th>Total T-shirt</th>
             <th>Single</th>
             <th>Couple</th>
             <th>status</th>
         </tr>
 
-        @foreach ($user->additinalMembers as $key => $hotelData)
-            <tr>
-                <td>{{ ++$key }}</td>
-                <td>{{ $totalSize }}</td>
-                <td>{{ $hotelData->single_room ? $hotelData->single_room : 0 }} </td>
-                <td>{{ $hotelData->couple_room ? $hotelData->couple_room : 0 }}</td>
-                <td>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a href="{{ route('backend.additional.edit', $hotelData->id) }}" style="display: inline-block; padding:0 20px; ">
-                            <span style="color:#000;">
-                                <iconify-icon icon="line-md:edit" width="24" height="24"></iconify-icon>
-                            </span>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        @endforeach
+        <tr>
+            <td>1</td>
+            <td>{{ $totalM }}</td>
+            <td>{{ $totalL }}</td>
+            <td>{{ $totalXL }}</td>
+            <td>{{ $totalXXL }}</td>
+            <td>{{ $totalTShirt }}</td>
+            <td>{{ $user->additinalMembers->sum('single_room') }}</td>
+            <td>{{ $user->additinalMembers->sum('couple_room') }}</td>
+            <td>
+                <div class="d-flex align-items-center justify-content-center">
+                    <a href="#" style="display: inline-block; padding:0 20px; ">
+                        <span style="color:#000;">
+                            <iconify-icon icon="line-md:edit" width="24" height="24"></iconify-icon>
+                        </span>
+                    </a>
+                </div>
+            </td>
+        </tr>
     </table>
 </div>
 @endsection

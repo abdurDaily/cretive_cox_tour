@@ -65,10 +65,12 @@
                     <label for="member_cost">Member Cost</label>
                     <select class="select_member form-control" name="additional_cost_user">
                         <option selected disabled>--- select members ---</option>
-                            @foreach ($users as $user)
-                              <option {{ $user->id == $editTransaction->id ? 'selected' : '' }} value="{{ $user->id }}" >{{ $user->name }}</option>
-                            @endforeach
-                      </select>
+                        @foreach ($users as $user)
+                            <option {{ $editTransaction->additional_cost_user == $user->id ? 'selected' : '' }} value="{{ $user->id }}">
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
@@ -158,7 +160,7 @@
                     timer: 3000,
                 }).then(() => {
                     // Redirect after the alert is closed
-                    window.location.href = "{{ route('backend.admin.dashboard') }}"; // Fixed syntax error
+                    window.location.href = "{{ route('dashboard') }}"; // Fixed syntax error
                 });
             },
             error: function(xhr) {
