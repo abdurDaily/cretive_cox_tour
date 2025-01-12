@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Transaction;
-use Illuminate\Http\Request;
 use App\Models\AditionalMember;
+use App\Models\RoomAndTShirtController;
+use App\Models\Transaction;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PDFController extends Controller
@@ -14,11 +15,12 @@ class PDFController extends Controller
    public function transactionPDF()
    {
       $transactions = Transaction::get();
-      $auth_user_transaction = Transaction::with('users')
-         ->select('user_id', 'id', 'cost_amount', 'add_amount')
-         ->get();
+      $auth_user_transaction = Transaction::with('users', 'costUsers')
+      ->select('user_id', 'additional_cost_user', 'id', 'cost_amount', 'add_amount')
+      ->get();
 
-      // dd($auth_user_transaction);
+      $roomTshirtAmount = RoomAndTShirtController::first();
+      // dd($roomTshirtAmount );
 
       // Group transactions by user_id and sum amounts
       $userTotals = $auth_user_transaction->groupBy('user_id')->map(function ($transactions) {
@@ -60,7 +62,7 @@ class PDFController extends Controller
       $totalAdd = Transaction::sum('add_amount');
       $totalCost = Transaction::sum('cost_amount');
       $costStatus = $totalAdd - $totalCost;
-      $pdf = Pdf::loadView('backend.pdf.transactionPdf', compact('transactionSums','userTotals', 'auth_user_transaction', 'transactions', 'totalAdd', 'totalCost', 'costStatus', 'totalTshirt'));
+      $pdf = Pdf::loadView('backend.pdf.transactionPdf', compact('transactionSums','userTotals', 'auth_user_transaction', 'transactions', 'totalAdd', 'totalCost', 'costStatus', 'totalTshirt','roomTshirtAmount'));
       return $pdf->stream('invoice.pdf');
    }
 }
