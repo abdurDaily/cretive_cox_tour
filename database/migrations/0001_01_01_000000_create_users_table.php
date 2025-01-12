@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('phone');
             $table->enum('tshirt_size', ['M', 'L', 'XL', 'XXL']);
 
-            $table->boolean('single_room')->nullable();
-            $table->boolean('couple_room')->nullable();
+            $table->boolean('single_room')->default(0); // Default to 0 (not selected)
+            $table->boolean('couple_room')->default(0);
 
 
             $table->longText('opinion')->nullable();
