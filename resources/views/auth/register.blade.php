@@ -28,6 +28,9 @@
                     <label for="email">Email <b class="text-danger">*</b></label>
                     <input value="{{ old('email') }}" required name="email" id="email" type="text" placeholder="email"
                         class="p-4 form-control mb-3">
+                        @error('email')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
 

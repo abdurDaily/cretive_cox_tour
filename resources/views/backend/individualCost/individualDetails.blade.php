@@ -12,7 +12,9 @@
             <th>date</th>
             <th>cost</th>
             <th>add</th>
+            @if (Auth::user()->status == 1)
             <th>status</th>
+            @endif
         </tr>
 
         @foreach ($user->transactions as $key => $data)
@@ -22,6 +24,8 @@
                 <td>{{ $data->created_at }}</td>
                 <td>{{ $data->cost_amount ? $data->cost_amount : 0 }} /-</td>
                 <td>{{ $data->add_amount ? $data->add_amount : 0 }} /-</td>
+                
+                @if (Auth::user()->status == 1)
                 <td>
                     <div class="d-flex align-items-center justify-content-center">
                         <a href="{{ route('backend.transaction.edit.individual.details', $data->id) }}" style="display: inline-block; padding:0 20px; ">
@@ -31,6 +35,8 @@
                         </a>
                     </div>
                 </td>
+                @endif
+                
             </tr>
         @endforeach
     </table>
@@ -63,7 +69,9 @@
             <th>Total T-shirt</th>
             <th>Single</th>
             <th>Couple</th>
+            @if (Auth::user()->status == 1)
             <th>status</th>
+            @endif
         </tr>
 
         @if($showDataRow)
@@ -76,6 +84,7 @@
             <td>{{ $totalTShirt }}</td>
             <td>{{ $singleRooms }}</td>
             <td>{{ $coupleRooms }}</td>
+            @if (Auth::user()->status == 1)
             <td>
                 <div class="d-flex align-items-center justify-content-center">
                     <a href="{{ route('backend.additional.edit', $user->id) }}" style="display: inline-block; padding:0 20px; ">
@@ -85,6 +94,8 @@
                     </a>
                 </div>
             </td>
+            @endif
+           
         </tr>
         @endif
     </table>

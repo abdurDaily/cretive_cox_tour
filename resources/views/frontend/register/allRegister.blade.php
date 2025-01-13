@@ -59,11 +59,11 @@
                         <td class="bg-dark text-light" colspan="7" style="text-align: center">Record Status</td>
                     </tr>
                     <tr>
-                        <td>M - {{ $m_size }}</td>
-                        <td>L - {{ $l_size }}</td>
-                        <td>XL - {{ $xl_size }}</td>
-                        <td>XXL - {{ $xxl_size }}</td>
-                        <td>Total - {{ $total_t_shirt }}</td>
+                        <td>M - {{ $totalMSize }}</td>
+                        <td>L - {{ $totalLSize }}</td>
+                        <td>XL - {{ $totalXLSize }}</td>
+                        <td>XXL - {{ $totalXXLSize }}</td>
+                        <td>Total - {{ $totalTShirt }}</td>
                         <td>Single Room - {{ $single_room }}</td>
                         <td>couple Room - {{ $couple_room }}</td>
                     </tr>
@@ -113,6 +113,7 @@
                     </div>
                 </div>
             </div>
+
 
 
 

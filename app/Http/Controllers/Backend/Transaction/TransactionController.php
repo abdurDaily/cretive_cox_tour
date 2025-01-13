@@ -51,7 +51,20 @@ class TransactionController extends Controller
     // INDIVIDUAL COSTING 
     public function individualCost()
     {
-        $users = User::with('transactions', 'additinalMembers')->get();
+        // Fetch the authenticated user
+        $authUser  = Auth::user();
+    
+        // Check if the authenticated user's status is 1
+        if ($authUser ->status == 1) {
+            // Fetch all users with their transactions and additionalMembers
+            $users = User::with('transactions', 'additinalMembers')->get();
+        } else {
+            // Fetch only the authenticated user's record
+            $users = User::with('transactions', 'additinalMembers')
+                        ->where('id', $authUser ->id) // Filter by the authenticated user's ID
+                        ->get();
+        }
+    
         $usersCosting = collect();
     
         foreach ($users as $user) {
@@ -69,11 +82,9 @@ class TransactionController extends Controller
             $user->xl_size = $user->additinalMembers->sum('xl_size') + ($user->xl_size ? 1 : 0);
             $user->xxl_size = $user->additinalMembers->sum('xxl_size') + ($user->xxl_size ? 1 : 0);
         }
-
-
     
         //* INDIVIDUAL ROOM COST
-        $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost','t_shirt_price')->first();
+        $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost', 't_shirt_price')->first();
     
         return view('backend.individualCost.individual', compact('users', 'individualRoomCost'));
     }

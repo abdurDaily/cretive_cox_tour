@@ -4,7 +4,7 @@
 <div class=" p-4 mt-3">
     <h4>individual cost</h4>
     <div class="table-responsive">
-        <table style="vertical-align: middle; text-align:center;" class="table table-striped table-bordered table-hover">
+        <table style="vertical-align: middle; text-align:center;" class="table table-striped-columns table-bordered table-hover">
             <tr>
                 <th style="padding: 20px 0;">Sn</th>
                 <th>Name</th>
