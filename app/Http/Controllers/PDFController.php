@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AditionalMember;
 use App\Models\RoomAndTShirtController;
+use App\Models\RoomCost;
 use App\Models\Transaction;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -19,7 +20,7 @@ class PDFController extends Controller
       ->select('user_id', 'additional_cost_user', 'id', 'cost_amount', 'add_amount')
       ->get();
 
-      $roomTshirtAmount = RoomAndTShirtController::first();
+      $roomTshirtAmount = RoomCost::first();
       // dd($roomTshirtAmount );
 
       // Group transactions by user_id and sum amounts

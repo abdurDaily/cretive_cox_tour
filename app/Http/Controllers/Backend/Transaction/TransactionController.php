@@ -51,30 +51,32 @@ class TransactionController extends Controller
     // INDIVIDUAL COSTING 
     public function individualCost()
     {
-        $users = User::with('transactions','additinalMembers')->get();
-        // dd($users);
+        $users = User::with('transactions', 'additinalMembers')->get();
         $usersCosting = collect();
-       
+    
         foreach ($users as $user) {
             $add_amount = $user->transactions->sum('add_amount');
             $user->cost_amount = $user->transactions->sum('cost_amount');
             $user->add_amount = $add_amount;
-
+    
             //* Rooms
             $user->single_rooms = $user->additinalMembers->sum('single_room') + ($user->single_room ? 1 : 0);
             $user->couple_rooms = $user->additinalMembers->sum('couple_room') + ($user->couple_room ? 1 : 0);
-
-
-            
+    
+            //* T-Shirt Sizes
+            $user->m_size = $user->additinalMembers->sum('m_size') + ($user->m_size ? 1 : 0);
+            $user->l_size = $user->additinalMembers->sum('l_size') + ($user->l_size ? 1 : 0);
+            $user->xl_size = $user->additinalMembers->sum('xl_size') + ($user->xl_size ? 1 : 0);
+            $user->xxl_size = $user->additinalMembers->sum('xxl_size') + ($user->xxl_size ? 1 : 0);
         }
-        
-        //* INDIVIDUAL ROOM COST 
-        $individualRoomCost = RoomCost::select('id','single_room_cost','couple_room_cost')->first();
 
-        // dd($individualRoomCost);
-        return view('backend.individualCost.individual', compact('users','individualRoomCost'));
+
+    
+        //* INDIVIDUAL ROOM COST
+        $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost','t_shirt_price')->first();
+    
+        return view('backend.individualCost.individual', compact('users', 'individualRoomCost'));
     }
-
 
 
     //* INDIVIDUAL DETAILS 

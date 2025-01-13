@@ -21,8 +21,9 @@ class UserSeeder extends Seeder
         $user->is_going = true;
         $user->password = Hash::make('password');
         $user->phone = '01777797143';
-        $user->tshirt_size = 'L';
+        $user->tshirt_size = "L";
         $user->opinion = 'no opinion';
+        $user->single_room = 1;
         $user->save();
     }
 }

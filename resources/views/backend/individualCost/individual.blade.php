@@ -14,10 +14,15 @@
                 <th>Paid /-</th>
                 <th>s.room</th>
                 <th>c.room</th>
+                <th>m.size</th>
+                <th>l.size</th>
+                <th>xl.size</th>
+                <th>xxl.size</th>
+                <th>Total Tshirt</th>
                 <th>total</th>
                 <th>status</th>
             </tr>
-            
+
             @forelse ($users as $key => $user)
                 <tr>
                     <td>{{ ++$key }}</td>
@@ -36,10 +41,16 @@
                         {{ ($individualRoomCost->couple_room_cost ?? 0) }} = 
                         {{ $user->couple_rooms * ($individualRoomCost->couple_room_cost ?? 0) }} /-
                     </td>
+                    
+                    <td>{{ $user->m_size }}</td>
+                    <td>{{ $user->l_size }}</td>
+                    <td>{{ $user->xl_size }}</td>
+                    <td>{{ $user->xxl_size }}</td>
+                    <td>{{ ($user->m_size + $user->l_size + $user->xl_size + $user->xxl_size) *  $individualRoomCost->t_shirt_price }}</td>
                     <td>
-                        {{ $user->cost_amount + 
+                        {{ ($user->cost_amount + 
                            ($user->single_rooms * ($individualRoomCost->single_room_cost ?? 0)) + 
-                           ($user->couple_rooms * ($individualRoomCost->couple_room_cost ?? 0)) }} /-
+                           ($user->couple_rooms * ($individualRoomCost->couple_room_cost ?? 0)) + ($user->m_size + $user->l_size + $user->xl_size + $user->xxl_size) *  $individualRoomCost->t_shirt_price) }} /-
                     </td>
                     <td>
                         <span class="btn btn-sm btn-{{ 

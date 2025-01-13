@@ -36,6 +36,18 @@
     </table>
 </div>
 
+@php
+    $totalM = $totalM ?? 0;
+    $totalL = $totalL ?? 0;
+    $totalXL = $totalXL ?? 0;
+    $totalXXL = $totalXXL ?? 0;
+    $totalTShirt = $totalTShirt ?? 0;
+    $singleRooms = $user->additinalMembers->sum('single_room') ?? 0;
+    $coupleRooms = $user->additinalMembers->sum('couple_room') ?? 0;
+
+    $showDataRow = $totalM > 0 || $totalL > 0 || $totalXL > 0 || $totalXXL > 0 || $totalTShirt > 0 || $singleRooms > 0 || $coupleRooms > 0;
+@endphp
+
 <div class="table-responsive">
     <div class="d-flex justify-content-between py-3">
         <h4>Hotel Costs</h4>
@@ -54,6 +66,7 @@
             <th>status</th>
         </tr>
 
+        @if($showDataRow)
         <tr>
             <td>1</td>
             <td>{{ $totalM }}</td>
@@ -61,11 +74,11 @@
             <td>{{ $totalXL }}</td>
             <td>{{ $totalXXL }}</td>
             <td>{{ $totalTShirt }}</td>
-            <td>{{ $user->additinalMembers->sum('single_room') }}</td>
-            <td>{{ $user->additinalMembers->sum('couple_room') }}</td>
+            <td>{{ $singleRooms }}</td>
+            <td>{{ $coupleRooms }}</td>
             <td>
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="#" style="display: inline-block; padding:0 20px; ">
+                    <a href="{{ route('backend.additional.edit', $user->id) }}" style="display: inline-block; padding:0 20px; ">
                         <span style="color:#000;">
                             <iconify-icon icon="line-md:edit" width="24" height="24"></iconify-icon>
                         </span>
@@ -73,6 +86,7 @@
                 </div>
             </td>
         </tr>
+        @endif
     </table>
 </div>
 @endsection

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('single_room_cost')->nullable();
             $table->integer('couple_room_cost')->nullable();
+            $table->integer('t_shirt_price')->nullable();
             $table->timestamps();
         });
     }
