@@ -34,7 +34,9 @@ class User extends Authenticatable
         'phone',
         'tshirt_size',
         'opinion',
-        'is_going'
+        'is_going',
+        'couple_room',
+        'single_room'
     ];
 
     /**

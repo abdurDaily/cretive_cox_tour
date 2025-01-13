@@ -43,7 +43,9 @@
                     <input required name="password_confirmation" id="password_confirmation" type="password" placeholder="confirm password" class="p-4 form-control mb-3">
                 </div>
 
-                <div class="col-lg-3">
+                
+
+                <div class="col-lg-4">
                     <span>are you interested ? <b class="text-danger">*</b></span> <br> <br>
 
 
@@ -64,18 +66,38 @@
 
 
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="phone">Contact Number <b class="text-danger">*</b></label>
                     <input required name="phone" id="phone" type="number" placeholder="phone"
                         class="p-4 form-control mb-3">
                 </div>
 
 
+                <div class="col-lg-4 text-end">
+                    <span>Choose Room <b class="text-danger">*</b></span> <br> <br>
+                
+                    <label for="single_room">Single</label>
+                    <input value="single" name="room" id="single_room" type="radio" class="mb-3">
+                
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+                    <label for="couple_room">Couple</label>
+                    <input value="couple" name="room" id="couple_room" type="radio" class="mb-3">
+                
+                    @error('room')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+
+     
+
+
                 
 
 
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="tshirt_size">T-Shirt Size <b class="text-danger">*</b></label>
                     <select required name="tshirt_size" id="tshirt_size" class="form-control p-4 mb-3">
                         <option value="" selected disabled>Select your T-shirt size</option>
@@ -86,7 +108,7 @@
                     </select>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-6">
                     <label for="show_size">T-Shirt Size </label> <br>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style=" color:#fff;"
                         class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
