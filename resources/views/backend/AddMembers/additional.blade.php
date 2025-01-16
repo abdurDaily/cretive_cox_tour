@@ -2,10 +2,10 @@
 @section('backend_contains')
     <div class="row">
         <div class="heading">
-            <h4 class="mt-5 text-center">Additinal Member Register</h4>
+            <h4 class="mt-5 text-center">Additinal Member Register </h4>
         </div>
 
-   
+
 
 
         <form class="p-3" id="register" action="{{ route('backend.additional.store') }}" method="post"
@@ -17,12 +17,12 @@
                     <label for="name">Name <b class="text-danger">*</b></label>
                     <input name="name" value="{{ old('name') }}" id="name" type="text" placeholder="name"
                         class="p-4 form-control mb-3">
-                        <span class="text-danger" id="name-error" style="display: none;">Please provide guest name</span>
+                    <span class="text-danger" id="name-error" style="display: none;">Please provide guest name</span>
                 </div>
 
                 <div class="col-lg-6 mb-3">
                     <label for="m_size">Select Amount of T-shirt</label> <br>
-
+                
                     <div class="row g-3">
                         <div class="col-lg-3">
                             <input name="m_size" class="form-control p-4" type="number" placeholder="M Size">
@@ -37,11 +37,9 @@
                             <input name="xxl_size" class="form-control p-4" type="number" placeholder="XXL Size">
                         </div>
                     </div>
-                    <span class="text-danger" id="tshirt-error" style="display: none;">Please provide at least one T-shirt
-                        size.</span>
+                    <span class="text-danger" id="tshirt-error" style="display: none;">Please provide at least one T-shirt size.</span>
                 </div>
-
-
+                
                 <!-- Rooms -->
                 <div class="col-lg-6 mb-3">
                     <div class="row" id="room-error">
@@ -56,15 +54,14 @@
                                 placeholder="amount : 01">
                         </div>
                     </div>
-                    <span class="text-danger" id="room-error-message" style="display: none;">Please provide at least one
-                        room amount (single or couple).</span>
+                    <span class="text-danger" id="room-error-message" style="display: none;">Please provide at least one room amount (single or couple).</span>
                 </div>
 
 
                 <div class="col-lg-6">
                     <label for="show_size">T-Shirt Size </label> <br>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style="color:#fff;"
-                        class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size"
+                        style="color:#fff;" class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
                 </div>
 
 
@@ -109,21 +106,12 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-           $(document).ready(function() {
+            $(document).ready(function() {
     $('#register').on('submit', function(e) {
         e.preventDefault(); // Prevent form submission
 
         // Reset error messages
-        $('#tshirt-error, #room-error-message, #name-error').hide();
-
-        // Validate name field
-        const name = $('input[name="name"]').val().trim();
-        let isValid = true;
-
-        if (!name) {
-            $('#name-error').show(); // Show name error message
-            isValid = false;
-        }
+        $('#tshirt-error, #room-error-message').hide();
 
         // Convert negative values to positive for T-shirt sizes
         const mSize = Math.abs(parseInt($('input[name="m_size"]').val()) || 0);
@@ -152,17 +140,15 @@
         // Validate T-shirt sizes
         if (!isTshirtProvided) {
             $('#tshirt-error').show(); // Show T-shirt error message
-            isValid = false;
         }
 
         // Validate rooms
         if (!isRoomProvided) {
             $('#room-error-message').show(); // Show room error message
-            isValid = false;
         }
 
         // If all validations pass, submit the form
-        if (isValid) {
+        if (isTshirtProvided && isRoomProvided) {
             $(this).unbind('submit').submit();
         }
     });

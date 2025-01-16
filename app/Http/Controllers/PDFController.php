@@ -35,13 +35,15 @@ class PDFController extends Controller
       //*T-SHIRT AMOUNT COUNT 
       $additionalMemberTshirt = AditionalMember::get();
       $guestTshirt = $additionalMemberTshirt->sum('m_size') + 
-                  $additionalMemberTshirt->sum('l_size') + 
-                  $additionalMemberTshirt->sum('xl_size') + 
-                  $additionalMemberTshirt->sum('xxl_size');
-
-      $employeeTshirt = count(User::get());
+                    $additionalMemberTshirt->sum('l_size') + 
+                    $additionalMemberTshirt->sum('xl_size') + 
+                    $additionalMemberTshirt->sum('xxl_size');
+      
+      $employeeTshirt = User::get()->sum(function ($user) {
+          return $user->m_size + $user->l_size + $user->xl_size + $user->xxl_size;
+      });
+      
       $totalTshirt = $guestTshirt + $employeeTshirt;
-
 
       //* TRANSPOTATION COST 
       $transactionSums = DB::table('transactions')

@@ -75,8 +75,15 @@
                         class="p-4 form-control mb-3">
                 </div>
 
+                <div class="col-lg-4">
+                    <label for="show_size">T-Shirt Size </label> <br>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style=" color:#fff;"
+                        class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
+                </div>
 
-                <div class="col-lg-4 text-end">
+
+
+                {{-- <div class="col-lg-4 text-end">
                     <span>Choose Room <b class="text-danger">*</b></span> <br> <br>
                 
                     <label for="single_room">Single</label>
@@ -109,14 +116,53 @@
                         <option value="3">XL</option>
                         <option value="4">XXL</option>
                     </select>
+                </div> --}}
+
+
+
+                <div class="col-lg-6 mb-3">
+                    <label for="m_size">Select Amount of T-shirt</label> <br>
+
+                    <div class="row g-3">
+                        <div class="col-lg-3">
+                            <input name="m_size" class="form-control p-4" type="number" placeholder="M Size">
+                        </div>
+                        <div class="col-lg-3">
+                            <input name="l_size" class="form-control p-4" type="number" placeholder="L Size">
+                        </div>
+                        <div class="col-lg-3">
+                            <input name="xl_size" class="form-control p-4" type="number" placeholder="XL Size">
+                        </div>
+                        <div class="col-lg-3">
+                            <input name="xxl_size" class="form-control p-4" type="number" placeholder="XXL Size">
+                        </div>
+                    </div>
+                    <span class="text-danger" id="tshirt-error" style="display: none;">Please provide at least one T-shirt
+                        size.</span>
                 </div>
 
-                <div class="col-lg-6">
-                    <label for="show_size">T-Shirt Size </label> <br>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="show_size" style=" color:#fff;"
-                        class="btn p-4 w-100 bg-dark">check T-Shirt Size</a>
+
+                <!-- Rooms -->
+                <div class="col-lg-6 mb-3">
+                    <div class="row" id="room-error">
+                        <div class="col-lg-6 mb-3">
+                            <label for="single_room">Amount of Single Room</label>
+                            <input type="number" id="single_room" name="single_room" class="form-control p-4"
+                                placeholder="amount : 01">
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <label for="couple_room">Amount of Couple Room</label>
+                            <input type="number" id="couple_room" name="couple_room" class="form-control p-4"
+                                placeholder="amount : 01">
+                        </div>
+                    </div>
+                    <span class="text-danger" id="room-error-message" style="display: none;">Please provide at least one
+                        room amount (single or couple).</span>
                 </div>
 
+                
+
+                
 
 
 
@@ -153,46 +199,69 @@
     </div>
 
     @push('frontend_js')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        {{-- <script>
-            $(function() {
+
+        
+        <script>
+            $(document).ready(function() {
                 $('#register').on('submit', function(e) {
-                    e.preventDefault(); // Prevent the form from submitting immediately
+                    e.preventDefault(); // Prevent form submission
 
-                    // Get the form data
-                    var formData = $(this).serialize();
+                    // Reset error messages
+                    $('#tshirt-error, #room-error-message, #name-error').hide();
 
-                    // Send the form data via AJAX
-                    $.ajax({
-                        url: "{{ route('backend.registrations.store') }}", // Replace with your route
-                        type: "POST",
-                        data: formData,
-                        success: function(response) {
-                            // Show the alert on successful data insertion
-                            Swal.fire({
-                                title: "Good job!",
-                                text: "Thanks for Registration",
-                                icon: "success",
-                                timer: 3000,
-                            }).then(() => {
-                                // Redirect after the alert is closed
-                                window.location.href = "{{ route('home') }}";
-                            });
-                        },
-                        error: function(xhr) {
-                            // Handle errors if any
-                            Swal.fire({
-                                title: "Error!",
-                                text: "Something went wrong. Please try again.",
-                                icon: "error",
-                            });
-                        }
-                    });
+                    // Validate name field
+                    const name = $('input[name="name"]').val().trim();
+                    let isValid = true;
+
+                    if (!name) {
+                        $('#name-error').show(); // Show name error message
+                        isValid = false;
+                    }
+
+                    // Convert negative values to positive for T-shirt sizes
+                    const mSize = Math.abs(parseInt($('input[name="m_size"]').val()) || 0);
+                    const lSize = Math.abs(parseInt($('input[name="l_size"]').val()) || 0);
+                    const xlSize = Math.abs(parseInt($('input[name="xl_size"]').val()) || 0);
+                    const xxlSize = Math.abs(parseInt($('input[name="xxl_size"]').val()) || 0);
+
+                    // Update the input fields with positive values
+                    $('input[name="m_size"]').val(mSize);
+                    $('input[name="l_size"]').val(lSize);
+                    $('input[name="xl_size"]').val(xlSize);
+                    $('input[name="xxl_size"]').val(xxlSize);
+
+                    const isTshirtProvided = mSize > 0 || lSize > 0 || xlSize > 0 || xxlSize > 0;
+
+                    // Convert negative values to positive for rooms
+                    const singleRoom = Math.abs(parseInt($('input[name="single_room"]').val()) || 0);
+                    const coupleRoom = Math.abs(parseInt($('input[name="couple_room"]').val()) || 0);
+
+                    // Update the input fields with positive values
+                    $('input[name="single_room"]').val(singleRoom);
+                    $('input[name="couple_room"]').val(coupleRoom);
+
+                    const isRoomProvided = singleRoom > 0 || coupleRoom > 0;
+
+                    // Validate T-shirt sizes
+                    if (!isTshirtProvided) {
+                        $('#tshirt-error').show(); // Show T-shirt error message
+                        isValid = false;
+                    }
+
+                    // Validate rooms
+                    if (!isRoomProvided) {
+                        $('#room-error-message').show(); // Show room error message
+                        isValid = false;
+                    }
+
+                    // If all validations pass, submit the form
+                    if (isValid) {
+                        $(this).unbind('submit').submit();
+                    }
                 });
             });
-        </script> --}}
+        </script>
     @endpush
 @endsection

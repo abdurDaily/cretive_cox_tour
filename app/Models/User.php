@@ -32,11 +32,19 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'tshirt_size',
+        // 'tshirt_size',
         'opinion',
         'is_going',
-        'couple_room',
-        'single_room'
+        // 'couple_room',
+        // 'single_room',
+
+
+        'm_size',
+        'l_size',
+        'xl_size',
+        'xxl_size',
+        'single_room',
+        'couple_room'
     ];
 
     /**

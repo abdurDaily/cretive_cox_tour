@@ -20,11 +20,17 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone');
-            $table->enum('tshirt_size', ['M', 'L', 'XL', 'XXL']);
+            // $table->enum('tshirt_size', ['M', 'L', 'XL', 'XXL']);
 
-            $table->boolean('single_room')->default(0); // Default to 0 (not selected)
-            $table->boolean('couple_room')->default(0);
+            // $table->boolean('single_room')->default(0); // Default to 0 (not selected)
+            // $table->boolean('couple_room')->default(0);
 
+            $table->integer('m_size')->nullable();
+            $table->integer('l_size')->nullable();
+            $table->integer('xl_size')->nullable();
+            $table->integer('xxl_size')->nullable();
+            $table->integer('single_room')->nullable();
+            $table->integer('couple_room')->nullable();
 
             $table->longText('opinion')->nullable();
             $table->timestamps();

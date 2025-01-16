@@ -42,34 +42,38 @@ class RegistrationController extends Controller
         $notgoingMembersDetails = User::where('is_going', 0)->get();
         $GuestDetails = AditionalMember::with('users')->get();
         
-        $m_size = AditionalMember::sum('m_size');
-        $l_size = AditionalMember::sum('l_size');
-        $xl_size = AditionalMember::sum('xl_size');
-        $xxl_size = AditionalMember::sum('xxl_size');
-
-
+        // Guest t-shirt sizes
+        $guestMSize = AditionalMember::sum('m_size');
+        $guestLSize = AditionalMember::sum('l_size');
+        $guestXLSize = AditionalMember::sum('xl_size');
+        $guestXXLSize = AditionalMember::sum('xxl_size');
+    
+        // User t-shirt sizes
+        $userMSize = User::sum('m_size');
+        $userLSize = User::sum('l_size');
+        $userXLSize = User::sum('xl_size');
+        $userXXLSize = User::sum('xxl_size');
+    
+        // Total t-shirt sizes
+        $totalMSize = $guestMSize + $userMSize;
+        $totalLSize = $guestLSize + $userLSize;
+        $totalXLSize = $guestXLSize + $userXLSize;
+        $totalXXLSize = $guestXXLSize + $userXXLSize;
+    
+        // Total t-shirt amount
+        $totalTShirt = $totalMSize + $totalLSize + $totalXLSize + $totalXXLSize;
+    
+        // Room details
         $couple_room = AditionalMember::sum('couple_room');
         $single_room = AditionalMember::sum('single_room');
         
-        $userMSize = User::where('tshirt_size', 'M')->count();
-        $userLSize = User::where('tshirt_size', 'L')->count();
-        $userXLSize = User::where('tshirt_size', 'XL')->count();
-        $userXXLSize = User::where('tshirt_size', 'XXL')->count();
-        
-        $totalMSize = $m_size + $userMSize;
-        $totalLSize = $l_size + $userLSize;
-        $totalXLSize = $xl_size + $userXLSize;
-        $totalXXLSize = $xxl_size + $userXXLSize;
-        $totalTShirt = $totalMSize + $totalLSize + $totalXLSize + $totalXXLSize;
-
-
+        // Total members and guests
         $totalMembers = count(User::get());
         $totalGuest = count(AditionalMember::get());
         $totalMembersGuest = $totalGoinMembers  + $totalGuest;
         
-        return view('frontend.register.allRegister', compact('allRegisters', 'totalGoinMembers', 'totalMembers', 'totalGuest', 'totalMembersGuest', 'goingMembersDetails', 'notgoingMembersDetails', 'GuestDetails','totalMSize','totalLSize','totalXLSize','totalXXLSize', 'totalTShirt','couple_room','single_room'));
+        return view('frontend.register.allRegister', compact('allRegisters', 'totalGoinMembers', 'totalMembers', 'totalGuest', 'totalMembersGuest', 'goingMembersDetails', 'notgoingMembersDetails', 'GuestDetails','couple_room','single_room', 'totalMSize', 'totalLSize', 'totalXLSize', 'totalXXLSize', 'totalTShirt'));
     }
-
 
 
     // ADDITIONAL MEMBERS ADD 

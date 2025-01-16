@@ -29,13 +29,11 @@
                     <label for="transaction_category">Select Category</label>
                     <select class="form-control p-4" name="transaction_category" id="transaction_category">
                         <option value="" selected disabled>Select any Category</option>
-                        <option value="1">Transport</option>
-                        <option value="2">Hotel </option>
-                        <option value="3">Breakfast  </option>
-                        <option value="4">Lunch </option>
-                        <option value="5">Snacks </option>
-                        <option value="6">Dinner </option>
-                        <option value="7">Others </option>
+                        <option value="1">Food</option>
+                        <option value="2">Transportation </option>
+                        <option value="3">Personal Cost  </option>
+                        <option value="4">Others</option>
+                        <option value="5">Office </option>
                     </select>
                 </div>
 

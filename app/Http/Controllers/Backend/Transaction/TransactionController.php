@@ -48,79 +48,70 @@ class TransactionController extends Controller
     }
 
 
-    // INDIVIDUAL COSTING 
     public function individualCost()
     {
         // Fetch the authenticated user
-        $authUser  = Auth::user();
+        $authUser = Auth::user();
     
         // Check if the authenticated user's status is 1
-        if ($authUser ->status == 1) {
+        if ($authUser->status == 1) {
             // Fetch all users with their transactions and additionalMembers
             $users = User::with('transactions', 'additinalMembers')->get();
         } else {
             // Fetch only the authenticated user's record
             $users = User::with('transactions', 'additinalMembers')
-                        ->where('id', $authUser ->id) // Filter by the authenticated user's ID
-                        ->get();
+                ->where('id', $authUser->id) // Filter by the authenticated user's ID
+                ->get();
         }
     
-        $usersCosting = collect();
-    
         foreach ($users as $user) {
-            $add_amount = $user->transactions->sum('add_amount');
             $user->cost_amount = $user->transactions->sum('cost_amount');
-            $user->add_amount = $add_amount;
+            $user->add_amount = $user->transactions->sum('add_amount');
     
-            //* Rooms
-            $user->single_rooms = $user->additinalMembers->sum('single_room') + ($user->single_room ? 1 : 0);
-            $user->couple_rooms = $user->additinalMembers->sum('couple_room') + ($user->couple_room ? 1 : 0);
+            // Office contributions
+            $user->officeAddAmount = $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'office';
+            })->sum('add_amount');
     
-            //* T-Shirt Sizes
-            $user->m_size = $user->additinalMembers->sum('m_size') + ($user->m_size ? 1 : 0);
-            $user->l_size = $user->additinalMembers->sum('l_size') + ($user->l_size ? 1 : 0);
-            $user->xl_size = $user->additinalMembers->sum('xl_size') + ($user->xl_size ? 1 : 0);
-            $user->xxl_size = $user->additinalMembers->sum('xxl_size') + ($user->xxl_size ? 1 : 0);
+            // Specific categories
+            $user->foodCost = $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'food';
+            })->sum('add_amount');
+    
+            $user->transportationCost = $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'transportation';
+            })->sum('add_amount');
+    
+            $user->personalCost = $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'personal cost';
+            })->sum('add_amount');
+    
+            $user->otherCost = $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'others';
+            })->sum('add_amount');
         }
     
         //* INDIVIDUAL ROOM COST
         $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost', 't_shirt_price')->first();
     
-        return view('backend.individualCost.individual', compact('users', 'individualRoomCost'));
+        $totalOfficeAddAmount = $users->sum(function ($user) {
+            return $user->transactions->filter(function ($transaction) {
+                return $transaction->transaction_category == 'office';
+            })->sum('add_amount');
+        });
+    
+        $officeProvided = Transaction::where('transaction_category', 'office')->sum('add_amount');
+        // dd($officeProvided);
+        $totalUsers = count(User::get());
+    
+        return view('backend.individualCost.individual', compact('users', 'individualRoomCost', 'officeProvided', 'totalUsers'));
     }
+    
 
 
-    //* INDIVIDUAL DETAILS 
-    public function individualDetails($id){
-        // Fetch the user with their transactions and additionalMembers
-        $user = User::with('transactions', 'additinalMembers')->find($id);
-    
-        // Check if the user exists
-        if (!$user) {
-            return redirect()->back()->with('error', 'User  not found.');
-        }
-    
-        // Initialize sums for each t-shirt size
-        $totalM = 0;
-        $totalL = 0;
-        $totalXL = 0;
-        $totalXXL = 0;
-    
-        // Check if additionalMembers exists and is not null
-        if ($user->additinalMembers) {
-            // Calculate the total sum for each t-shirt size
-            $totalM = $user->additinalMembers->sum('m_size');
-            $totalL = $user->additinalMembers->sum('l_size');
-            $totalXL = $user->additinalMembers->sum('xl_size');
-            $totalXXL = $user->additinalMembers->sum('xxl_size');
-        }
-    
-        // Calculate the total t-shirt size
-        $totalTShirt = $totalM + $totalL + $totalXL + $totalXXL;
-    
-        // Pass the user and t-shirt sums to the view
-        return view('backend.individualCost.individualDetails', compact('user', 'totalM', 'totalL', 'totalXL', 'totalXXL', 'totalTShirt'));
-    }
+
+
+
 
 
     //* EDIT INDIVIDUAL DATA
@@ -137,7 +128,8 @@ class TransactionController extends Controller
     }
 
     //**UPDATE TRANSACTION  */
-    public function updateIndividualDetails(Request $request, $id){
+    public function updateIndividualDetails(Request $request, $id)
+    {
         $updateTransaction = Transaction::find($id);
         $updateTransaction->additional_cost_user = $request->additional_cost_user;
         $updateTransaction->auth_user = Auth::user()->name;
@@ -148,5 +140,4 @@ class TransactionController extends Controller
         $updateTransaction->cost_amount = $request->cost_amount;
         $updateTransaction->save();
     }
-    
 }

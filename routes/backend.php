@@ -21,7 +21,7 @@ Route::prefix('login')->name('login.')->group(function(){
 Route::prefix('registrations')->name('registrations.')->group(function(){
     Route::get('/registrations', [RegistrationController::class, 'index'])->name('index');
     Route::post('/registrations', [RegistrationController::class, 'store'])->name('store');
-    Route::get('/view-registrations', [RegistrationController::class, 'viewRegistrations'])->name('view');
+    Route::get('/view-registrations', [RegistrationController::class, 'viewRegistrations'])->name('view')->middleware('auth');
     Route::put('/registrations/{registration}', [RegistrationController::class, 'update'])->name('update');
     Route::delete('/registrations/{registration}', [RegistrationController::class, 'destroy'])->name('destroy');
     Route::get('/registrations/{registration}', [RegistrationController::class, 'show'])->name('show');
@@ -54,10 +54,10 @@ Route::prefix('admin')->name('foods.')->group(function(){
 
 //BACKEND TRANSACTION  
 Route::prefix('admin')->name('transaction.')->group(function(){
-    Route::get('/transactions', [TransactionController::class, 'transactionIndex'])->name('transactions');
+    Route::get('/transactions', [TransactionController::class, 'transactionIndex'])->name('transactions')->middleware('auth');
     Route::post('/transactions', [TransactionController::class, 'transactionStore'])->name('store');
     Route::get('/view-transactions', [TransactionController::class, 'viewtransaction'])->name('view');
-    Route::get('/transactions-pdf', [PDFController::class, 'transactionPDF'])->name('pdf');
+    Route::get('/transactions-pdf', [PDFController::class, 'transactionPDF'])->name('pdf')->middleware('auth');
    
     // INDIVIDUAL COSTING
     Route::get('/individual-cost', [TransactionController::class, 'individualCost'])->name('individual');

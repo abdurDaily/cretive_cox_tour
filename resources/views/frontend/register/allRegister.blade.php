@@ -8,8 +8,6 @@
 
 
             <div class="d-flex mb-3">
-
-
                 <!-- Button trigger modal -->
                 <button type="button" style="padding: 10px 15px;" data-bs-toggle="modal" data-bs-target="#goingMembers">
                     Going Members
@@ -64,8 +62,9 @@
                         <td>XL - {{ $totalXLSize }}</td>
                         <td>XXL - {{ $totalXXLSize }}</td>
                         <td>Total - {{ $totalTShirt }}</td>
+                        {{-- <td>Total - {{ $totalTShirt }}</td>
                         <td>Single Room - {{ $single_room }}</td>
-                        <td>couple Room - {{ $couple_room }}</td>
+                        <td>couple Room - {{ $couple_room }}</td> --}}
                     </tr>
                 </table>
             </div>
