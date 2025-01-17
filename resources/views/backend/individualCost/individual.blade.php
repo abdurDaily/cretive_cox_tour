@@ -1,4 +1,5 @@
 @extends('backend.layout')
+
 @section('backend_contains')
 
 <div class="p-4 mt-3">
@@ -19,9 +20,9 @@
                     <th>Room Total</th>
                     <th>Food</th>
                     <th>Transportation</th>
-                    <th>Personal Cost</th>
                     <th>Others</th>
                     <th>Office Share</th>
+                    <th style="min-width: 150px;">Guest Cost</th>
                     <th>Total</th>
                     <th>Status</th>
                 </tr>
@@ -35,57 +36,35 @@
                         <td>{{ Str::limit($user->opinion, 10, '...') }}</td>
                         <td>{{ $user->cost_amount }} /-</td>
                         <td>{{ $user->add_amount }} /-</td>
-            
-                        {{-- Single Room --}}
                         <td>{{ $user->single_room * ($individualRoomCost->single_room_cost ?? 0) }} /-</td>
-                        
-                        {{-- Couple Room --}}
                         <td>{{ $user->couple_room * ($individualRoomCost->couple_room_cost ?? 0) }} /-</td>
-            
-                        {{-- Total T-shirts --}}
+                        <td>{{ $user->totalAdditionalTshirtCost }} /-</td>
+                        <td>{{ ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) + 
+                               ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) }} /-</td>
+                        <td>{{ $user->foodCost }} /-</td>
+                        <td>{{ $user->transportCost }} /-</td>
+                        <td>{{ $user->otherCost }} /-</td>
+                        <td>{{ $distributedOfficeAddAmount }} /-</td>
+                        <td>
+                            T-shirt: {{ $user->totalAdditionalTshirtCost }} /- <br>
+                            Room: {{ $user->totalAdditionalRoomCost }} /-
+                        </td>
                         <td>
                             @php
-                                $total_t_shirt_cost = 
-                                    ($user->m_size + $user->l_size + $user->xl_size + $user->xxl_size) * 
-                                    ($individualRoomCost->t_shirt_price ?? 0);
+                                $payable = $user->cost_amount +
+                                           ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
+                                           ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) +
+                                           $user->totalAdditionalTshirtCost +
+                                           $user->totalAdditionalRoomCost +
+                                           $user->foodCost +
+                                           $user->transportCost +
+                                           $user->otherCost;
                             @endphp
-                            {{ $total_t_shirt_cost }} /-
+                            {{ $payable }} /-
                         </td>
-            
-                        {{-- Room Total --}}
                         <td>
-                            {{ ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
-                               ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) }} /-
-                        </td>
-            
-                        {{-- Food --}}
-                        <td>{{ $user->foodCost }} /-</td>
-            
-                        {{-- Transportation --}}
-                        <td>{{ $user->transportationCost }} /-</td>
-            
-                        {{-- Personal Cost --}}
-                        <td>{{ $user->personalCost }} /-</td>
-            
-                        {{-- Others --}}
-                        <td>{{ $user->otherCost }} /-</td>
-            
-                        {{-- Office Share --}}
-                        <td>{{ round($officeProvided / $totalUsers) }} /-</td>
-            
-                        {{-- Total --}}
-                        @php
-                            $payable = $user->cost_amount +
-                            ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
-                            ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) +
-                            $total_t_shirt_cost;
-                        @endphp
-                        <td>{{ $payable }} /-</td>
-            
-                        {{-- Status --}}
-                        <td>
-                            <span class="mt-1 btn btn-sm btn-{{ $payable <= $user->add_amount + (round($officeProvided / $totalUsers)) ? 'success' : 'danger' }}">
-                                {{ $payable - ($user->add_amount + round($officeProvided / $totalUsers)) }} tk
+                            <span class="mt-1 btn btn-sm btn-{{ $payable <= $user->add_amount ? 'success' : 'danger' }}">
+                                {{ $payable - $user->add_amount }} tk
                             </span>
                             <a class="btn btn-primary btn-sm mt-1" href="{{ route('backend.transaction.individual.details', $user->id) }}">
                                 Details
@@ -98,7 +77,6 @@
                     </tr>
                 @endforelse
             </tbody>
-            
         </table>
     </div>
 </div>

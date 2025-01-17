@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('auth_user');
             $table->foreignId('additional_cost_user')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->enum('transaction_category', ['food', 'transportation', 'personal cost', 'office', 'others']);
+            $table->enum('transaction_category', ['food', 'transportation', 'office', 'others', 'paid']);
             $table->longText('transaction_description')->nullable();
             $table->integer('add_amount')->nullable();
             $table->integer('cost_amount')->nullable();

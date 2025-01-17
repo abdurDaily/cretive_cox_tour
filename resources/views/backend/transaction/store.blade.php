@@ -29,11 +29,11 @@
                     <label for="transaction_category">Select Category</label>
                     <select class="form-control p-4" name="transaction_category" id="transaction_category">
                         <option value="" selected disabled>Select any Category</option>
-                        <option value="1">Food</option>
-                        <option value="2">Transportation </option>
-                        <option value="3">Personal Cost  </option>
-                        <option value="4">Others</option>
-                        <option value="5">Office </option>
+                        <option value="food">Food</option>
+                        <option value="transportation">Transportation </option>
+                        <option value="others">Others</option>
+                        <option value="office">Office </option>
+                        <option value="paid">Paid</option>
                     </select>
                 </div>
 
@@ -48,17 +48,17 @@
 
 
             <div class="row mb-0 mx-auto ">
-                <div class="col-lg-4 px-2">
+                {{-- <div class="col-lg-4 px-2">
                     <label for="cost_amount">Cost Amount :</label>
                     <input type="number" name="cost_amount" placeholder="transaction amount"
                         class="mb-3 form-control p-4" id="cost_amount">
-                </div>
-                <div class="col-lg-4 px-2">
+                </div> --}}
+                <div class="col-lg-6 px-2">
                     <label for="add_amount">Add Amount :</label>
                     <input type="number" name="add_amount" placeholder="add amount" class="mb-3 form-control p-4"
                         id="add_amount">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <label for="member_cost">Member Cost</label>
                     <select class="select_member form-control" name="additional_cost_user">
                         <option selected disabled>--- select members ---</option>

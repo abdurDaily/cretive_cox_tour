@@ -48,65 +48,89 @@ class TransactionController extends Controller
     }
 
 
+
+
+
+
+
+
+    
+    
+    
+
+
+    
     public function individualCost()
     {
-        // Fetch the authenticated user
         $authUser = Auth::user();
+        $isAdminView = !$authUser->id;
     
-        // Check if the authenticated user's status is 1
-        if ($authUser->status == 1) {
-            // Fetch all users with their transactions and additionalMembers
+        if ($authUser->status == 1 || $isAdminView) {
             $users = User::with('transactions', 'additinalMembers')->get();
         } else {
-            // Fetch only the authenticated user's record
             $users = User::with('transactions', 'additinalMembers')
-                ->where('id', $authUser->id) // Filter by the authenticated user's ID
+                ->where('id', $authUser->id)
                 ->get();
         }
     
-        foreach ($users as $user) {
-            $user->cost_amount = $user->transactions->sum('cost_amount');
-            $user->add_amount = $user->transactions->sum('add_amount');
-    
-            // Office contributions
-            $user->officeAddAmount = $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'office';
-            })->sum('add_amount');
-    
-            // Specific categories
-            $user->foodCost = $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'food';
-            })->sum('add_amount');
-    
-            $user->transportationCost = $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'transportation';
-            })->sum('add_amount');
-    
-            $user->personalCost = $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'personal cost';
-            })->sum('add_amount');
-    
-            $user->otherCost = $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'others';
-            })->sum('add_amount');
-        }
-    
-        //* INDIVIDUAL ROOM COST
-        $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost', 't_shirt_price')->first();
-    
-        $totalOfficeAddAmount = $users->sum(function ($user) {
-            return $user->transactions->filter(function ($transaction) {
-                return $transaction->transaction_category == 'office';
-            })->sum('add_amount');
-        });
-    
-        $officeProvided = Transaction::where('transaction_category', 'office')->sum('add_amount');
-        // dd($officeProvided);
         $totalUsers = count(User::get());
     
-        return view('backend.individualCost.individual', compact('users', 'individualRoomCost', 'officeProvided', 'totalUsers'));
+        $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost', 't_shirt_price')->first();
+    
+        $foodTransactions = Transaction::where('transaction_category', 'food')->get();
+        $transportTransactions = Transaction::where('transaction_category', 'transportation')->get();
+        $otherTransactions = Transaction::where('transaction_category', 'others')->get();
+        $officeTransactions = Transaction::where('transaction_category', 'office')->get();
+    
+        $foodTotal = $foodTransactions->whereNull('additional_cost_user')->sum('add_amount');
+        $transportTotal = $transportTransactions->whereNull('additional_cost_user')->sum('add_amount');
+        $otherTotal = $otherTransactions->whereNull('additional_cost_user')->sum('add_amount');
+        $officeTotal = $officeTransactions->sum('add_amount');
+    
+        $distributedFoodCost = ($totalUsers > 0) ? round($foodTotal / $totalUsers) : 0;
+        $distributedTransportCost = ($totalUsers > 0) ? round($transportTotal / $totalUsers) : 0;
+        $distributedOtherCost = ($totalUsers > 0) ? round($otherTotal / $totalUsers) : 0;
+        $distributedOfficeAddAmount = ($totalUsers > 0) ? round($officeTotal / $totalUsers) : 0;
+    
+        foreach ($users as $user) {
+            $user->foodCost = $distributedFoodCost;
+            $user->transportCost = $distributedTransportCost;
+            $user->otherCost = $distributedOtherCost;
+    
+            $additionalFood = $foodTransactions->where('additional_cost_user', $user->id)->sum('add_amount');
+            $additionalTransport = $transportTransactions->where('additional_cost_user', $user->id)->sum('add_amount');
+            $additionalOther = $otherTransactions->where('additional_cost_user', $user->id)->sum('add_amount');
+    
+            $user->foodCost += $additionalFood;
+            $user->transportCost += $additionalTransport;
+            $user->otherCost += $additionalOther;
+    
+            $user->totalAdditionalTshirtCost = $user->additinalMembers->sum(function ($member) use ($individualRoomCost) {
+                return ($member->m_size + $member->l_size + $member->xl_size + $member->xxl_size) * ($individualRoomCost->t_shirt_price ?? 0);
+            });
+    
+            $user->totalAdditionalRoomCost = $user->additinalMembers->sum(function ($member) use ($individualRoomCost) {
+                return ($member->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
+                       ($member->couple_room * ($individualRoomCost->couple_room_cost ?? 0));
+            });
+        }
+    
+        return view('backend.individualCost.individual', compact(
+            'users',
+            'distributedFoodCost',
+            'distributedTransportCost',
+            'distributedOtherCost',
+            'distributedOfficeAddAmount',
+            'individualRoomCost',
+            'isAdminView'
+        ));
     }
     
+
+
+
+
+
 
 
 
