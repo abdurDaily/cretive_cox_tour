@@ -12,18 +12,17 @@
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Opinion</th>
-                    <th>Cost /-</th>
-                    <th>Paid /-</th>
-                    <th>s.room</th>
-                    <th>c.room</th>
-                    <th>Total T-shirt</th>
-                    <th>Room Total</th>
+                    {{-- <th>s.room</th>
+                    <th>c.room</th> --}}
+                    <th> T-shirt</th>
+                    <th>Room </th>
                     <th>Food</th>
                     <th>Transportation</th>
                     <th>Others</th>
                     <th>Office Share</th>
                     <th style="min-width: 150px;">Guest Cost</th>
-                    <th>Total</th>
+                    <th>Total Cost</th>
+                    <th>Paid /-</th>  <!-- Added Paid column -->
                     <th>Status</th>
                 </tr>
             </thead>
@@ -34,10 +33,9 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ Str::limit($user->opinion, 10, '...') }}</td>
-                        <td>{{ $user->cost_amount }} /-</td>
-                        <td>{{ $user->add_amount }} /-</td>
-                        <td>{{ $user->single_room * ($individualRoomCost->single_room_cost ?? 0) }} /-</td>
-                        <td>{{ $user->couple_room * ($individualRoomCost->couple_room_cost ?? 0) }} /-</td>
+                          <!-- Display Paid Amount -->
+                        {{-- <td>{{ $user->single_room * ($individualRoomCost->single_room_cost ?? 0) }} /-</td>
+                        <td>{{ $user->couple_room * ($individualRoomCost->couple_room_cost ?? 0) }} /-</td> --}}
                         <td>{{ $user->totalAdditionalTshirtCost }} /-</td>
                         <td>{{ ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) + 
                                ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) }} /-</td>
@@ -62,6 +60,7 @@
                             @endphp
                             {{ $payable }} /-
                         </td>
+                        <td>{{ $user->add_amount }} /-</td>
                         <td>
                             <span class="mt-1 btn btn-sm btn-{{ $payable <= $user->add_amount ? 'success' : 'danger' }}">
                                 {{ $payable - $user->add_amount }} tk
