@@ -30,13 +30,20 @@
                     <label for="transaction_category">Select Category</label>
                     <select class="form-control p-4" name="transaction_category" id="transaction_category">
                         <option value="" selected disabled>Select any Category</option>
-                        <option value="1" {{ $editTransaction->transaction_category == 'transport'  ? 'selected' : ''  }}>Transport</option>
-                        <option value="2" {{ $editTransaction->transaction_category == 'hotel'  ? 'selected' : '' }}>Hotel </option>
-                        <option value="3" {{ $editTransaction->transaction_category == 'breakfast'  ? 'selected' : '' }}>Breakfast  </option>
-                        <option value="4" {{ $editTransaction->transaction_category == 'lunch'  ? 'selected' : '' }}>Lunch </option>
-                        <option value="5" {{ $editTransaction->transaction_category == 'snacks'  ? 'selected' : '' }}>Snacks </option>
-                        <option value="6" {{ $editTransaction->transaction_category == 'dinner'  ? 'selected' : '' }}>Dinner </option>
-                        <option value="7" {{ $editTransaction->transaction_category == 'others' ? 'selected' : ''  }}>Others </option>
+                        <option value="food" {{ $editTransaction->transaction_category == 'food'  ? 'selected' : ''  }}>Food</option>
+                        <option value="transportation" {{ $editTransaction->transaction_category == 'transportation'  ? 'selected' : '' }}>Transportation </option>
+                        <option value="others" {{ $editTransaction->transaction_category == 'others'  ? 'selected' : '' }}>Others  </option>
+                        <option value="office" {{ $editTransaction->transaction_category == 'office'  ? 'selected' : '' }}>Office </option>
+                        <option value="paid" {{ $editTransaction->transaction_category == 'paid'  ? 'selected' : '' }}>Paid </option>
+                        
+
+{{-- 
+                        <option value="" selected disabled>Select any Category</option>
+                        <option value="food">Food</option>
+                        <option value="transportation">Transportation </option>
+                        <option value="others">Others</option>
+                        <option value="office">Office </option>
+                        <option value="paid">Paid</option> --}}
                     </select>
                 </div>
 
@@ -51,17 +58,17 @@
 
 
             <div class="row mb-0 mx-auto ">
-                <div class="col-lg-4 px-2">
+                {{-- <div class="col-lg-4 px-2">
                     <label for="cost_amount">Cost Amount :</label>
                     <input value="{{ $editTransaction->cost_amount }}" type="number" name="cost_amount" placeholder="transaction amount"
                         class="mb-3 form-control p-4" id="cost_amount">
-                </div>
-                <div class="col-lg-4 px-2">
+                </div> --}}
+                <div class="col-lg-6 px-2">
                     <label for="add_amount">Add Amount :</label>
                     <input value="{{ $editTransaction->add_amount }}" type="number" name="add_amount" placeholder="add amount" class="mb-3 form-control p-4"
                         id="add_amount">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <label for="member_cost">Member Cost</label>
                     <select class="select_member form-control" name="additional_cost_user">
                         <option selected disabled>--- select members ---</option>
