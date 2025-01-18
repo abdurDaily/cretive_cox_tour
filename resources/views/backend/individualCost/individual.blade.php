@@ -43,20 +43,20 @@
         <table style="vertical-align: middle; text-align: center;" class="table table-striped table-bordered">
             <thead >
                 <tr>
-                    <th class="bg-success text-light" style="min-width: 20px;">Sn</th>
-                    <th class="bg-success text-light" style="min-width: 25ch;">Name</th>
-                    <th class="bg-success text-light" style="min-width: 11ch;">Phone</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Opinion</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">T-shirt</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Room</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Food</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Transportation</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Others</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Office Share</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Guest Cost</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Total Cost</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Paid /-</th>
-                    <th class="bg-success text-light" style="min-width: 150px;">Status</th>
+                    <th class="bg-dark text-light" style="min-width: 20px;">Sn</th>
+                    <th class="bg-dark text-light" style="min-width: 25ch;">Name</th>
+                    <th class="bg-dark text-light" style="min-width: 11ch;">Phone</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Opinion</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">T-shirt</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Room</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Food</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Transportation</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Others</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Office Share</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Guest Cost</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Total Cost</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Paid /-</th>
+                    <th class="bg-dark text-light" style="min-width: 150px;">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -122,21 +122,27 @@
                         <!-- Paid Amount Column -->
                         <td>{{ $user->add_amount }} /-</td>
 
-                        <!-- Status Column: Display based on remaining balance -->
+                        <!-- Status Column: Display based on remaining balance after subtracting Office Share -->
                         <td>
-                            @if ($remainingBalance == 0)
-                                <span class="mt-1 btn btn-sm btn-success">
-                                    Paid in full
-                                </span>
-                            @elseif ($remainingBalance < 0)
-                                <span class="mt-1 btn btn-sm btn-success">
-                                    {{ abs($remainingBalance) }} tk overpaid
-                                </span>
-                            @else
-                                <span class="mt-1 btn btn-sm btn-danger">
-                                    {{ $remainingBalance }} tk due
-                                </span>
-                            @endif
+                            @php
+                                // Subtract office share from the total payable to calculate the status
+                                $remainingAfterOfficeShare = $payable - $distributedOfficeAddAmount;
+
+                                if ($remainingAfterOfficeShare == 0) {
+                                    $status = "Paid in full";
+                                    $statusClass = "success";
+                                } elseif ($remainingAfterOfficeShare < 0) {
+                                    $status = abs($remainingAfterOfficeShare) . " tk overpaid";
+                                    $statusClass = "success";
+                                } else {
+                                    $status = $remainingAfterOfficeShare . " tk due";
+                                    $statusClass = "danger";
+                                }
+                            @endphp
+
+                            <span class="mt-1 btn btn-sm btn-{{ $statusClass }}">
+                                {{ $status }}
+                            </span>
 
                             <a class="btn btn-primary btn-sm mt-1" href="{{ route('backend.transaction.individual.details', $user->id) }}">
                                 Details
@@ -155,6 +161,7 @@
         </div>
     </div>
 </div>
+
 @push('backend_js')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
@@ -162,7 +169,6 @@
 
             let isActive= null
 
-            
             $('.table-responsive').on('mouseover', function(){
                 if(!isActive){
                     setTimeout(() => {
@@ -170,11 +176,8 @@
                     }, 300);
                     isActive+=1
                 }
-                
+
             })
-
-
-
         })
     </script>
 @endpush

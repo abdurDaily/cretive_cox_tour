@@ -26,7 +26,7 @@
             </div>
 
 
-            <div class="col-lg-6 text-center">
+            {{-- <div class="col-lg-6 text-center">
                 <div class="shadow">
                     <a href="{{ route('backend.transaction.pdf') }}">
                         <div class="h-100 d-flex py-5 align-items-center justify-content-center flex-column">
@@ -40,11 +40,11 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
 
             
-            <div class="col-lg-6 text-center">
+            {{-- <div class="col-lg-6 text-center">
                 <div class="shadow">
                     <a href="{{ route('backend.registrations.view') }}">
                         <div class="h-100 d-flex py-5 align-items-center justify-content-center flex-column">
@@ -58,7 +58,7 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
 
 

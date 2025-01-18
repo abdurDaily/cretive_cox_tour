@@ -19,11 +19,11 @@ class UserSeeder extends Seeder
         $user->name = 'abdur rahman';
         $user->email = 'abdurdiary@gmail.com';
         $user->is_going = true;
-        $user->password = Hash::make('password');
+        $user->password = Hash::make('test123@');
         $user->phone = '01777797143';
-        // $user->tshirt_size = "L";
+        $user->l_size = 1;
         $user->opinion = 'no opinion';
-        // $user->single_room = 1;
+        $user->single_room = 1;
         $user->save();
     }
 }
