@@ -31,6 +31,7 @@ return new class extends Migration
             $table->integer('xxl_size')->nullable();
             $table->integer('single_room')->nullable();
             $table->integer('couple_room')->nullable();
+            $table->integer('additional_members')->nullable();
 
             $table->longText('opinion')->nullable();
             $table->timestamps();

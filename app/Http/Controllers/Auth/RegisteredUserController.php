@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
             'is_going' => ['required'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone' => ['required'],
             // 'tshirt_size' => ['required'],
             // 'room' => ['required', 'in:single,couple'], // Ensure room is required and valid
@@ -61,7 +61,8 @@ class RegisteredUserController extends Controller
             'xl_size' => $request->xl_size,
             'xxl_size' => $request->xxl_size,
             'single_room' => $request->single_room,
-            'couple_room' => $request->couple_room
+            'couple_room' => $request->couple_room,
+            'additional_members' => $request->additional_members,
 
         ]);
     

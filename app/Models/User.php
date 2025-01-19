@@ -44,7 +44,8 @@ class User extends Authenticatable
         'xl_size',
         'xxl_size',
         'single_room',
-        'couple_room'
+        'couple_room',
+        'additional_members'
     ];
 
     /**

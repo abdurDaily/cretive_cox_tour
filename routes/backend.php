@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AdditionalMember\AdditionalController;
+use App\Http\Controllers\Backend\EditUser\EditUserController;
 use App\Http\Controllers\Backend\Foods\FoodController;
 use App\Http\Controllers\Backend\Home\HomeController;
 use App\Http\Controllers\Backend\Login\loginController;
@@ -52,6 +53,14 @@ Route::prefix('admin')->name('foods.')->group(function(){
 });
 
 
+//EDIT USER
+
+Route::prefix('admin')->name('edit.user.')->group(function(){
+    Route::get('/edit-user/{id}', [EditUserController::class, 'editUserIndex'])->name('profile')->middleware('auth');
+    Route::put('/update-user/{id}', [EditUserController::class, 'updateUser'])->name('update')->middleware('auth');
+
+});
+
 //BACKEND TRANSACTION  
 Route::prefix('admin')->name('transaction.')->group(function(){
     Route::get('/transactions', [TransactionController::class, 'transactionIndex'])->name('transactions')->middleware('auth');
@@ -60,7 +69,7 @@ Route::prefix('admin')->name('transaction.')->group(function(){
     Route::get('/transactions-pdf', [PDFController::class, 'transactionPDF'])->name('pdf')->middleware('auth');
    
     // INDIVIDUAL COSTING
-    Route::get('/individual-cost', [TransactionController::class, 'individualCost'])->name('individual');
+    Route::get('/individual-cost', [TransactionController::class, 'individualCost'])->name('individual')->middleware('auth');
     Route::get('/individual-details/{id}', [TransactionController::class, 'individualDetails'])->name('individual.details');
     Route::get('/edit-individual-details/{id}', [TransactionController::class, 'editIndividualDetails'])->name('edit.individual.details');
     Route::put('/update-individual-details/{id}', [TransactionController::class, 'updateIndividualDetails'])->name('update.individual.details');

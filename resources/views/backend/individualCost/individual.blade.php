@@ -3,7 +3,7 @@
 @section('backend_contains')
 @push('backend_css')
     <style>
-      .main .container{
+        .main .container {
             max-width: 100%;
             padding: 0 10px;
         }
@@ -13,8 +13,8 @@
         .table-responsive {
             -ms-overflow-style: none;
             scrollbar-width: none; /* Firefox */
-         }
-         .overlay{
+        }
+        .overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -24,24 +24,23 @@
             display: grid;
             place-items: center;
             transition: 0.3s
-         }
+        }
 
-         .overlay img{
+        .overlay img {
             width: 200px;
-         }
-         .overlay.hide{
+        }
+        .overlay.hide {
             opacity: 0;
             visibility: hidden
-         }
-
+        }
     </style>
 @endpush
 
 <div class="p-4 mt-3">
-    <h4>Individual Cost </h4>
-    <div class="table-responsive" style="overflow-x: scroll;position:relative;">
+    <h4>Individual Cost</h4>
+    <div class="table-responsive" style="overflow-x: scroll; position:relative;">
         <table style="vertical-align: middle; text-align: center;" class="table table-striped table-bordered">
-            <thead >
+            <thead>
                 <tr>
                     <th class="bg-dark text-light" style="min-width: 20px;">Sn</th>
                     <th class="bg-dark text-light" style="min-width: 25ch;">Name</th>
@@ -67,13 +66,15 @@
                         <td>{{ $user->phone }}</td>
                         <td>{{ Str::limit($user->opinion, 10, '...') }}</td>
 
-                        <!-- T-shirt Cost: Main user's T-shirt cost (not including guests) -->
-                        <td>{{ $user->userTshirtCost }} /-</td>
+                        <!-- T-shirt Cost -->
+                        <td>{{ $user->userTshirtCost ?? 'Not Available' }} /-</td>
 
                         <!-- Room Cost Column -->
                         <td>
-                            {{ ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) + 
-                               ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) }} /-
+                            {{ 
+                                ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) + 
+                                ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) 
+                            }} /-
                         </td>
 
                         <!-- Food Cost Column -->
@@ -88,32 +89,32 @@
                         <!-- Office Share Column -->
                         <td>{{ $distributedOfficeAddAmount }} /-</td>
 
-                        <!-- Guest Costs: T-shirt, Room, Food, Transport, Other -->
+                        <!-- Guest Costs Column -->
                         <td class="text-start">
                             T-shirt: {{ $user->totalAdditionalTshirtCost }} /- <br>
-                            Room: {{ $user->totalAdditionalRoomCost }} /- <br>
                             Food: {{ $user->guestFoodCost }} /- <br>
                             Transport: {{ $user->guestTransportCost }} /- <br>
                             Other: {{ $user->guestOtherCost }} /-
                         </td>
 
-                        <!-- Total Cost Column: Calculation of total payable amount -->
+                        <!-- Total Cost Column -->
                         <td>
                             @php
-                                $payable = 
+                                $mainUserCost = 
                                     ($user->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
                                     ($user->couple_room * ($individualRoomCost->couple_room_cost ?? 0)) +
                                     $user->userTshirtCost +
                                     $user->foodCost +
                                     $user->transportCost +
-                                    $user->otherCost +
+                                    $user->otherCost;
+
+                                $guestCost = 
                                     $user->totalAdditionalTshirtCost +
-                                    $user->totalAdditionalRoomCost +
                                     $user->guestFoodCost +
                                     $user->guestTransportCost +
                                     $user->guestOtherCost;
 
-                                $remainingBalance = $payable - $user->add_amount;
+                                $payable = $mainUserCost + $guestCost;
                             @endphp
 
                             {{ $payable }} /-
@@ -122,20 +123,18 @@
                         <!-- Paid Amount Column -->
                         <td>{{ $user->add_amount }} /-</td>
 
-                        <!-- Status Column: Display based on remaining balance after subtracting Office Share -->
+                        <!-- Status Column -->
                         <td>
                             @php
-                                // Subtract office share from the total payable to calculate the status
-                                $remainingAfterOfficeShare = $payable - $distributedOfficeAddAmount;
-
-                                if ($remainingAfterOfficeShare == 0) {
+                                $remainingBalance = $payable - $user->add_amount;
+                                if ($remainingBalance == 0) {
                                     $status = "Paid in full";
                                     $statusClass = "success";
-                                } elseif ($remainingAfterOfficeShare < 0) {
-                                    $status = abs($remainingAfterOfficeShare) . " tk overpaid";
+                                } elseif ($remainingBalance < 0) {
+                                    $status = abs($remainingBalance) . " tk overpaid";
                                     $statusClass = "success";
                                 } else {
-                                    $status = $remainingAfterOfficeShare . " tk due";
+                                    $status = $remainingBalance . " tk due";
                                     $statusClass = "danger";
                                 }
                             @endphp
@@ -156,7 +155,7 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="overlay ">
+        <div class="overlay">
             <img src="https://media1.giphy.com/media/P6a5ei3uRMAsukar9F/giphy.gif?cid=6c09b952vkegx5vsxa5u7nfbv8lxscidmomyxxow6qfx7rlg&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" alt="">
         </div>
     </div>
@@ -164,21 +163,19 @@
 
 @push('backend_js')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
+        let isActive = null;
 
-            let isActive= null
-
-            $('.table-responsive').on('mouseover', function(){
-                if(!isActive){
-                    setTimeout(() => {
-                        $(this).find('.overlay').addClass('hide');
-                    }, 300);
-                    isActive+=1
-                }
-
-            })
-        })
-    </script>
+        $('.table-responsive').on('mouseover', function(){
+            if(!isActive){
+                setTimeout(() => {
+                    $(this).find('.overlay').addClass('hide');
+                }, 300);
+                isActive += 1;
+            }
+        });
+    });
+</script>
 @endpush
 @endsection

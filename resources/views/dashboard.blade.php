@@ -85,7 +85,7 @@
 
 
 
-        <div class="col-lg-6 text-center mx-auto">
+        {{-- <div class="col-lg-6 text-center mx-auto">
             <div class="shadow">
                 <a href="{{ route('backend.additional.index') }}">
                     <div class="h-100 d-flex py-5 align-items-center justify-content-center flex-column">
@@ -99,7 +99,7 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </div> --}}
 
 
     </div>

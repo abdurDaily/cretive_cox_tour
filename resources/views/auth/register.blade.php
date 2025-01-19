@@ -35,15 +35,21 @@
 
 
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <label for="password">Make a Password <b class="text-danger">*</b></label>
                     <input  required name="password" id="password" type="password" placeholder="password"
                         class="p-4 form-control mb-3">
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <label for="password_confirmation">Confirm Password <b class="text-danger">*</b></label>
                     <input required name="password_confirmation" id="password_confirmation" type="password" placeholder="confirm password" class="p-4 form-control mb-3">
+                </div>
+
+                
+                <div class="col-lg-4">
+                    <label for="additional_members">Additional Members<b class="text-danger">*</b></label>
+                    <input  name="additional_members" id="additional_members" type="number" placeholder="add additional members" class="p-4 form-control mb-3">
                 </div>
 
                 

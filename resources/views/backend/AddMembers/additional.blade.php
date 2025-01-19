@@ -22,7 +22,7 @@
 
                 <div class="col-lg-6 mb-3">
                     <label for="m_size">Select Amount of T-shirt</label> <br>
-                
+
                     <div class="row g-3">
                         <div class="col-lg-3">
                             <input name="m_size" class="form-control p-4" type="number" placeholder="M Size">
@@ -37,9 +37,10 @@
                             <input name="xxl_size" class="form-control p-4" type="number" placeholder="XXL Size">
                         </div>
                     </div>
-                    <span class="text-danger" id="tshirt-error" style="display: none;">Please provide at least one T-shirt size.</span>
+                    <span class="text-danger" id="tshirt-error" style="display: none;">Please provide at least one T-shirt
+                        size.</span>
                 </div>
-                
+
                 <!-- Rooms -->
                 <div class="col-lg-6 mb-3">
                     <div class="row" id="room-error">
@@ -54,7 +55,8 @@
                                 placeholder="amount : 01">
                         </div>
                     </div>
-                    <span class="text-danger" id="room-error-message" style="display: none;">Please provide at least one room amount (single or couple).</span>
+                    <span class="text-danger" id="room-error-message" style="display: none;">Please provide at least one
+                        room amount (single or couple).</span>
                 </div>
 
 
@@ -106,12 +108,112 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+            // $(document).ready(function() {
+            //     $('#register').on('submit', function(e) {
+            //         e.preventDefault(); // Prevent form submission
+
+            //         // Reset error messages
+            //         $('#tshirt-error, #room-error-message').hide();
+
+            //         // Convert negative values to positive for T-shirt sizes
+            //         const mSize = Math.abs(parseInt($('input[name="m_size"]').val()) || 0);
+            //         const lSize = Math.abs(parseInt($('input[name="l_size"]').val()) || 0);
+            //         const xlSize = Math.abs(parseInt($('input[name="xl_size"]').val()) || 0);
+            //         const xxlSize = Math.abs(parseInt($('input[name="xxl_size"]').val()) || 0);
+
+            //         // Update the input fields with positive values
+            //         $('input[name="m_size"]').val(mSize);
+            //         $('input[name="l_size"]').val(lSize);
+            //         $('input[name="xl_size"]').val(xlSize);
+            //         $('input[name="xxl_size"]').val(xxlSize);
+
+            //         const isTshirtProvided = mSize > 0 || lSize > 0 || xlSize > 0 || xxlSize > 0;
+
+            //         // Convert negative values to positive for rooms
+            //         const singleRoom = Math.abs(parseInt($('input[name="single_room"]').val()) || 0);
+            //         const coupleRoom = Math.abs(parseInt($('input[name="couple_room"]').val()) || 0);
+
+            //         // Update the input fields with positive values
+            //         $('input[name="single_room"]').val(singleRoom);
+            //         $('input[name="couple_room"]').val(coupleRoom);
+
+            //         const isRoomProvided = singleRoom > 0 || coupleRoom > 0;
+
+            //         // Validate T-shirt sizes
+            //         if (!isTshirtProvided) {
+            //             $('#tshirt-error').show(); // Show T-shirt error message
+            //         }
+
+            //         // Validate rooms
+            //         if (!isRoomProvided) {
+            //             $('#room-error-message').show(); // Show room error message
+            //         }
+
+            //         // If all validations pass, submit the form
+            //         if (isTshirtProvided && isRoomProvided) {
+            //             $(this).unbind('submit').submit();
+            //         }
+            //     });
+            // });
+
+
+
+
+            // $(document).ready(function() {
+            //     $('#register').on('submit', function(e) {
+            //         e.preventDefault(); // Prevent form submission
+
+            //         // Reset error messages
+            //         $('#tshirt-error').hide();
+
+            //         // Convert negative values to positive for T-shirt sizes
+            //         const mSize = Math.abs(parseInt($('input[name="m_size"]').val()) || 0);
+            //         const lSize = Math.abs(parseInt($('input[name="l_size"]').val()) || 0);
+            //         const xlSize = Math.abs(parseInt($('input[name="xl_size"]').val()) || 0);
+            //         const xxlSize = Math.abs(parseInt($('input[name="xxl_size"]').val()) || 0);
+
+            //         // Update the input fields with positive values
+            //         $('input[name="m_size"]').val(mSize);
+            //         $('input[name="l_size"]').val(lSize);
+            //         $('input[name="xl_size"]').val(xlSize);
+            //         $('input[name="xxl_size"]').val(xxlSize);
+
+            //         const isTshirtProvided = mSize > 0 || lSize > 0 || xlSize > 0 || xxlSize > 0;
+
+            //         // Convert negative values to positive for rooms
+            //         const singleRoom = Math.abs(parseInt($('input[name="single_room"]').val()) || 0);
+            //         const coupleRoom = Math.abs(parseInt($('input[name="couple_room"]').val()) || 0);
+
+            //         // Update the input fields with positive values
+            //         $('input[name="single_room"]').val(singleRoom);
+            //         $('input[name="couple_room"]').val(coupleRoom);
+
+            //         // Validate T-shirt sizes
+            //         if (!isTshirtProvided) {
+            //             $('#tshirt-error').show(); // Show T-shirt error message
+            //             return; // Stop form submission
+            //         }
+
+            //         // If all validations pass, submit the form
+            //         $(this).unbind('submit').submit();
+            //     });
+            // });
+
+
+
             $(document).ready(function() {
     $('#register').on('submit', function(e) {
         e.preventDefault(); // Prevent form submission
 
         // Reset error messages
-        $('#tshirt-error, #room-error-message').hide();
+        $('#name-error, #tshirt-error').hide();
+
+        // Check if the name field is provided
+        const name = $('input[name="name"]').val().trim();
+        if (!name) {
+            $('#name-error').show(); // Show name error message
+            return; // Stop form submission
+        }
 
         // Convert negative values to positive for T-shirt sizes
         const mSize = Math.abs(parseInt($('input[name="m_size"]').val()) || 0);
@@ -125,7 +227,7 @@
         $('input[name="xl_size"]').val(xlSize);
         $('input[name="xxl_size"]').val(xxlSize);
 
-        const isTshirtProvided = mSize > 0 || lSize > 0 || xlSize > 0 || xxlSize > 0;
+        // NOTE: No validation required for T-shirts (they are optional now)
 
         // Convert negative values to positive for rooms
         const singleRoom = Math.abs(parseInt($('input[name="single_room"]').val()) || 0);
@@ -135,24 +237,13 @@
         $('input[name="single_room"]').val(singleRoom);
         $('input[name="couple_room"]').val(coupleRoom);
 
-        const isRoomProvided = singleRoom > 0 || coupleRoom > 0;
-
-        // Validate T-shirt sizes
-        if (!isTshirtProvided) {
-            $('#tshirt-error').show(); // Show T-shirt error message
-        }
-
-        // Validate rooms
-        if (!isRoomProvided) {
-            $('#room-error-message').show(); // Show room error message
-        }
-
         // If all validations pass, submit the form
-        if (isTshirtProvided && isRoomProvided) {
-            $(this).unbind('submit').submit();
-        }
+        $(this).unbind('submit').submit();
     });
 });
+
+
+
         </script>
     @endpush
 @endsection

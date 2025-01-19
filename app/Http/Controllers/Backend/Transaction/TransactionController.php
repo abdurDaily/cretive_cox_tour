@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Transaction;
 
-use App\Models\User;
-use App\Models\Transaction;
-use Illuminate\Http\Request;
-use App\Models\AditionalMember;
 use App\Http\Controllers\Controller;
+use App\Models\AditionalMember;
 use App\Models\RoomCost;
+use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
@@ -369,21 +369,26 @@ class TransactionController extends Controller
 
 
 
+
+
+
+
+
+
     public function individualCost()
 {
     $authUser = Auth::user();
     $isAdminView = !$authUser->id;
 
     if ($authUser->status == 1 || $isAdminView) {
-        $users = User::with('transactions', 'additinalMembers')->get();
+        $users = User::get(); // Get all users instead of eager loading relationships
     } else {
-        $users = User::with('transactions', 'additinalMembers')
-            ->where('id', $authUser->id)
-            ->get();
+        $users = User::where('id', $authUser->id)->get(); // Only get the authenticated user's data
     }
 
     $totalUsers = count(User::get());
 
+    // Fetch room cost and T-shirt price
     $individualRoomCost = RoomCost::select('id', 'single_room_cost', 'couple_room_cost', 't_shirt_price')->first();
 
     // Calculate totals for each category
@@ -421,35 +426,23 @@ class TransactionController extends Controller
         $user->transportCost += $additionalTransport;
         $user->otherCost += $additionalOther;
 
-        // Add additional t-shirt and room costs for each user
-        $user->totalAdditionalTshirtCost = $user->additinalMembers->sum(function ($member) use ($individualRoomCost) {
-            return ($member->m_size + $member->l_size + $member->xl_size + $member->xxl_size) * ($individualRoomCost->t_shirt_price ?? 0);
-        });
+        // Calculate additional T-shirt cost for the user (if any additional members exist)
+        $user->totalAdditionalTshirtCost = ($user->additional_members) * ($individualRoomCost->t_shirt_price ?? 0);
 
         // Add main user T-shirt cost here
         $user->userTshirtCost = ($individualRoomCost->t_shirt_price ?? 0);
 
-        $user->totalAdditionalRoomCost = $user->additinalMembers->sum(function ($member) use ($individualRoomCost) {
-            return ($member->single_room * ($individualRoomCost->single_room_cost ?? 0)) +
-                ($member->couple_room * ($individualRoomCost->couple_room_cost ?? 0));
-        });
+        // Calculate additional room costs based on the number of additional members
+        $user->totalAdditionalRoomCost = ($user->additional_members) * (($individualRoomCost->single_room_cost ?? 0) + ($individualRoomCost->couple_room_cost ?? 0));
 
         // Add paid amount for each user based on additional_cost_user
         $paidAmount = $paidTransactions->where('additional_cost_user', $user->id)->sum('add_amount');
         $user->add_amount = $paidAmount;  // Update the paid amount for the user
 
-        // Add guest costs: Food, Transport, Other
-        $user->guestFoodCost = $user->additinalMembers->sum(function ($member) use ($distributedFoodCost) {
-            return $distributedFoodCost;
-        });
-
-        $user->guestTransportCost = $user->additinalMembers->sum(function ($member) use ($distributedTransportCost) {
-            return $distributedTransportCost;
-        });
-
-        $user->guestOtherCost = $user->additinalMembers->sum(function ($member) use ($distributedOtherCost) {
-            return $distributedOtherCost;
-        });
+        // Add guest costs: Food, Transport, Other (If there are additional members)
+        $user->guestFoodCost = ($user->additional_members) * $distributedFoodCost;
+        $user->guestTransportCost = ($user->additional_members) * $distributedTransportCost;
+        $user->guestOtherCost = ($user->additional_members) * $distributedOtherCost;
     }
 
     return view('backend.individualCost.individual', compact(
@@ -462,6 +455,12 @@ class TransactionController extends Controller
         'isAdminView'
     ));
 }
+
+    
+
+
+
+    
 
 
 
